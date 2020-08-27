@@ -1,0 +1,59 @@
+.your-player {
+  height: calc(1.17 * var(--your-player-width));
+  max-height: 88%;
+  width: var(--your-player-width);
+  max-width: 94%;
+
+  background: var(--player-color);
+  border: 0.3vw solid var(--player-border-color);
+  border-radius: calc(0.6vh + 0.6vw);
+
+  font-size: 2.4vw;
+}
+
+.your-player-enter {
+  border-color: var(--player-turn-color);
+}
+
+.your-player-inactive {
+  animation: yourPlayerEnter var(--animation-speed) linear forwards;
+  animation-direction: reverse;
+}
+
+.your-player-out {
+  color: var(--exiled-text-color);
+  background-color: var(--player-out-color);
+}
+
+.your-player-winner {
+  animation: yourPlayerWinner var(--animation-speed) linear forwards;
+}
+
+.your-player-selected {
+  border-color: var(--player-selected-color);
+}
+
+.card-selectable {
+  border: 0.2vw solid var(--player-selected-color);
+  cursor: pointer;
+  @media (hover: hover) {
+    &:hover {
+      filter: grayscale(1);
+    }
+  }
+}
+
+.card-selected {
+  cursor: auto;
+  border: 0.2vw solid var(--player-selected-color);
+  filter: grayscale(1);
+}
+
+// animations
+
+@keyframes yourPlayerWinner {
+  to {
+    background: var(--player-winner-color);
+    border-color: var(--player-turn-color);
+  }
+}

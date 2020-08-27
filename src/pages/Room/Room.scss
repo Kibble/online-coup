@@ -1,0 +1,96 @@
+.room-title {
+  &::before,
+  &::after {
+    width: 13.38vw;
+  }
+}
+
+.players-list {
+  padding-top: 1vh;
+  text-transform: none;
+  font-size: 4.25vh;
+  font-weight: 400;
+  white-space: pre-wrap;
+  line-height: 1.2;
+}
+
+.room-info {
+  position: absolute;
+  color: #555555;
+  bottom: 10.5vh;
+  font-size: 3vh;
+  white-space: pre-wrap;
+  line-height: 1.2;
+}
+
+.leave-btn {
+  width: 12vw;
+  margin-top: 2vh;
+  font-size: 4.5vh;
+  text-transform: uppercase;
+  border: 0.6vh solid #42526c;
+  height: 8vh;
+  border-radius: 0.5vh;
+  color: #42526c;
+  &:hover {
+    background: #b0c4de;
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    outline: none;
+  }
+}
+
+.roomID-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75vh;
+}
+
+#roomID {
+  margin-left: 0.2vw;
+  border: 0.25vh solid #999999;
+  background: #f3f3f3;
+  border-radius: 0.7vh;
+  width: 17vw;
+  height: 4.8vh;
+  resize: none;
+  color: var(--text-color);
+  &::selection {
+    background: #cccccc;
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    outline: none;
+  }
+}
+
+.copy-btn {
+  width: 7.5vw;
+  margin-left: 0.3vw;
+  text-transform: uppercase;
+  border: 0.4vh solid #3b6aa0;
+  height: 6vh;
+  border-radius: 1vh;
+  color: #3b6aa0;
+  &:hover {
+    background: #a4d3ee;
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    outline: none;
+  }
+}
+
+.copied-btn {
+  color: #666666;
+  border-color: #666666;
+  &:hover {
+    cursor: default;
+    background: none;
+  }
+}

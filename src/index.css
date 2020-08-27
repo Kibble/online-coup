@@ -1,13 +1,58 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap");
+
+#root {
+  height: 100vh;
+  width: 100vw;
+
+  font-family: "Rowdies", sans-serif;
+  font-weight: 300;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+
+  /* colors */
+
+  --bg-color: #f1f1f1;
+  --text-color: #393e46;
+
+  --player-color: #eeeeee;
+  --player-shadow-color: #cacaca;
+  --player-border-color: #646464;
+  --player-turn-color: var(--text-color);
+  --card-border-color: #6a6a6a;
+  --player-selected-color: #3a5894;
+
+  --action-color: #eeeeee;
+  --action-border-color: #707070;
+  --action-shadow-color: #d3d3d3;
+  --enabled-color: #dddddd;
+
+  --player-out-color: #dbdbdb;
+  --player-out-shadow-color: #b7b7b7;
+  --exiled-text-color: var(--card-border-color);
+
+  --player-winner-color: #ffec8b;
+  --player-winner-shadow-color: #fcdc3b;
+
+  --position-marker-color: var(--text-color);
+  /* measurements */
+
+  --player-width: 12.8vw;
+  --player-step: 0.27vw;
+  --your-player-width: 23vw;
+  --button-height: 3.8vw;
+  --btn-step: 0.25vw;
+  --border-width: 0.165vw;
+  --player-turn-width: 0.25vw;
+
+  /* timing */
+
+  --animation-speed: 80ms;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.bgio-client {
+  height: 100%;
+}
+
+* {
+  -webkit-user-drag: none;
 }

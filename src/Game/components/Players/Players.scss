@@ -1,0 +1,24 @@
+.players {
+  height: 37%;
+  display: flex;
+  justify-content: center;
+}
+
+.player-container {
+  height: 100%;
+  width: 14.075vw;
+  display: flex;
+  // padding-top: 2.7vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.position-marker {
+  height: 95%;
+  border-left: 0.27vw dashed var(--position-marker-color);
+  filter: opacity(0.75);
+}
+
+.position-marker-active {
+  filter: opacity(1);
+}
