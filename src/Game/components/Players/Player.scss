@@ -131,13 +131,6 @@
   color: var(--block-color);
 }
 
-.player-enter {
-  animation: playerEnter var(--animation-speed) linear forwards;
-  &::before {
-    animation: playerBeforeEnter var(--animation-speed) linear forwards;
-  }
-}
-
 .player-entered {
   border: var(--player-turn-width) solid var(--player-turn-color);
   transform: scale(1.07);
@@ -160,21 +153,6 @@
   transform: scale(1.07);
   &::before {
     background-color: var(--player-winner-shadow-color);
-    box-shadow: 0 0 0 var(--player-turn-width) var(--player-turn-color);
-  }
-}
-
-// animations
-
-@keyframes playerEnter {
-  to {
-    border: var(--player-turn-width) solid var(--player-turn-color);
-    transform: scale(1.07);
-  }
-}
-
-@keyframes playerBeforeEnter {
-  to {
     box-shadow: 0 0 0 var(--player-turn-width) var(--player-turn-color);
   }
 }

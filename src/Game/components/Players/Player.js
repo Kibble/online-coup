@@ -59,11 +59,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
   } else if (gameOver) {
     animate = "player-winner";
   } else if (isCurrentPlayer) {
-    if (G.turnLog.action !== "") {
-      animate = "player-entered";
-    } else {
-      animate = "player-enter";
-    }
+    animate = "player-entered";
   } else if (isYourTurn) {
     if (canSelectPlayer) {
       animate = "player-select";
