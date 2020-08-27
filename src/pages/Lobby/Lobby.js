@@ -8,7 +8,7 @@ const Lobby = (props) => {
       {props.children}
       <div className="game-info">
         Developed by vyang1222 -{" "}
-        <a href="https://www.w3schools.com" rel="noopener noreferrer" target="_blank">
+        <a href="https://github.com/vyang1222/online-coup" rel="noopener noreferrer" target="_blank">
           about this project.
         </a>
         {"\n"}
