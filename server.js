@@ -1,8 +1,8 @@
 import { Server } from "boardgame.io/server";
-import { Coup } from "./Game/Game";
+import { Coup } from "./src/Game/Game";
 import path from "path";
 import serve from "koa-static";
-import { DEFAULT_PORT } from "./config";
+import { DEFAULT_PORT } from "./src/config";
 
 const server = Server({ games: [Coup] });
 const PORT = process.env.PORT || DEFAULT_PORT;
