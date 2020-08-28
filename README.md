@@ -3,11 +3,13 @@ A clone of Coup built using React.js and boardgame.io featuring a lobby, turn lo
 **Link to play:** https://online-coup.herokuapp.com/
 
 ## About
-Coup is a popular strategy board game revolved around deception. Crush your rivals and be the last one standing to win! <br>
-This game can be played online with 2-8 players. <br><br>
-***Note: Online Coup is currently in beta testing. It may take some time to load the page initially, and bugs may occur while playing.***<br> 
-***Please use the LEAVE button to leave a game.*** <br><br>
+Coup is a popular strategy board game revolved around deception. Be the last one standing to win! <br>
+This game can be played online with 2-8 players. <br>
+
 **Link to official rules:** https://www.ultraboardgames.com/coup/game-rules.php <br>
+
+***Note: Online Coup is currently in beta testing. It may take some time to load the page initially, and bugs may occur while playing.***<br> 
+***Please use the LEAVE button to leave a game.***
 
 ### Rule Modifications/Clarification
 - Turns pass in a clockwise fashion. If you are not first or last, a dashed line will clarify your turn order.
