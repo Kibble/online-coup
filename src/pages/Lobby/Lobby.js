@@ -12,7 +12,7 @@ const Lobby = (props) => {
           about this project.
         </a>
         {"\n"}
-        Based on the original Coup board game by La Mame Games.
+        Based on the original Coup board game by Indie Boards & Cards.
       </div>
     </div>
   );
