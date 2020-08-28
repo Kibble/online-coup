@@ -313,6 +313,9 @@ const continueTurn = (G, ctx) => {
 const executeAction = (G, ctx) => {
   if (G.turnLog.action === "foreign aid") {
     G.players[ctx.currentPlayer].coins += 2;
+    if (Object.keys(G.turnLog.blockedBy).length !== 0) {
+      ctx.events.endTurn();
+    }
   } else if (G.turnLog.action === "tax") {
     G.players[ctx.currentPlayer].coins += 3;
   } else if (G.turnLog.action === "exchange") {

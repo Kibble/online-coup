@@ -205,7 +205,7 @@ const AnnouncementArea = (props) => {
     }
 
     // any blockable or challengable action
-    else if (!ctx.activePlayers[ctx.currentPlayer]) {
+    else if (ctx.activePlayers[ctx.currentPlayer] !== "action") {
       if (!isYourTurn) {
         setMsg(`${name} attempts to ${G.turnLog.action}.`);
         setMsgLoading(false);
