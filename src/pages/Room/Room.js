@@ -32,21 +32,26 @@ const Room = (props) => {
   // update players who join
   useEffect(() => {
     const interval = setInterval(() => {
-      api.getPlayers(id).then((players) => {
-        setPlayers(players);
-        const currPlayers = players.filter((player) => player.name);
-        if (currPlayers.length === players.length) {
-          setShow(true);
+      api.getPlayers(id).then(
+        (players) => {
+          setPlayers(players);
+          const currPlayers = players.filter((player) => player.name);
+          if (currPlayers.length === players.length) {
+            setShow(true);
+          }
+        },
+        () => {
+          history.push("", { invalidRoom: true });
         }
-      });
-    }, 1000);
+      );
+    }, 500);
     if (show) {
       clearInterval(interval);
     }
     return () => {
       clearInterval(interval);
     };
-  }, [show, players.length, id]);
+  }, [show, players.length, id, history]);
 
   // copy to clipboard
   useEffect(() => {

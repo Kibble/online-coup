@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Lobby from "../Lobby/Lobby";
 import { LobbyAPI } from "../../LobbyAPI";
 import "./Home.scss";
@@ -17,6 +17,20 @@ const Home = (props) => {
   const [cName, setCName] = useState("");
   const cNameCount = maxNameLength - cName.length;
   const [errMsg, setErrMsg] = useState("");
+
+  useEffect(() => {
+    let timer;
+    if (history.location.state && history.location.state.invalidRoom) {
+      setErrMsg("room does not exist!");
+      timer = setTimeout(() => {
+        setErrMsg("");
+        history.replace();
+      }, 4000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [history]);
 
   const handleKeyDown = (e, text) => {
     if (e.key === " ") {
@@ -37,23 +51,29 @@ const Home = (props) => {
   };
 
   const joinRoom = async (roomID, name) => {
-    const players = await api.getPlayers(roomID);
-    const uniqueName =
-      players
-        .filter((player) => player.name)
-        .map((player) => player.name)
-        .indexOf(name) === -1;
-    if (uniqueName) {
-      // find first empty seat
-      const id = players.find((player) => !player.name).id;
-      api.joinRoom(roomID, id, name).then((credentials) => {
-        saveInfo(name, id, credentials);
-        history.push("/rooms/" + roomID);
-      });
-    } else {
-      setErrMsg("name already taken!");
-      setJName("");
-      document.getElementById("joinName").value = "";
+    try {
+      const players = await api.getPlayers(roomID);
+      const uniqueName =
+        players
+          .filter((player) => player.name)
+          .map((player) => player.name)
+          .indexOf(name) === -1;
+      if (uniqueName) {
+        // find first empty seat
+        const id = players.find((player) => !player.name).id;
+        api.joinRoom(roomID, id, name).then((credentials) => {
+          saveInfo(name, id, credentials);
+          history.push("/rooms/" + roomID);
+        });
+      } else {
+        setErrMsg("name already taken!");
+        setJName("");
+        document.getElementById("joinName").value = "";
+      }
+    } catch (err) {
+      setErrMsg("room does not exist!");
+      setRoom("");
+      document.getElementById("roomIdentification").value = "";
     }
   };
 
@@ -70,6 +90,7 @@ const Home = (props) => {
         <p style={{ margin: "0" }}>room id</p>
       </div>
       <input
+        id="roomIdentification"
         type="text"
         maxLength={`${roomIDLength}`}
         spellCheck="false"

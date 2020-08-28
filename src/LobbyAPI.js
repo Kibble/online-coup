@@ -39,20 +39,12 @@ export class LobbyAPI {
   }
 
   async getPlayers(roomID) {
-    try {
-      const res = await this.api.get(roomID).json();
-      return res.players;
-    } catch (err) {
-      console.log("failed to retrieve room info:", err);
-    }
+    const res = await this.api.get(roomID).json();
+    return res.players;
   }
 
   async getRooms() {
-    try {
-      const res = await this.api.get("").json();
-      return res;
-    } catch (err) {
-      console.log("failed to retrieve rooms:", err);
-    }
+    const res = await this.api.get("").json();
+    return res;
   }
 }
