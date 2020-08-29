@@ -24,7 +24,7 @@ export const initializeGame = (numPlayers) => {
         { ...deck.pop(), discarded: false, id: 0 },
         { ...deck.pop(), discarded: false, id: 1 },
       ],
-      coins: 7,
+      coins: 2,
       id: `${i}`,
     });
   }

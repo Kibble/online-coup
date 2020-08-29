@@ -2,7 +2,12 @@ import React from "react";
 import uniqid from "uniqid";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSkullCrossbones, faCrown, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSkullCrossbones,
+  faCrown,
+  faThumbsUp,
+  faThumbsDown,
+} from "@fortawesome/free-solid-svg-icons";
 import "./Player.scss";
 
 const Player = ({ G, ctx, playerID, moves, i }) => {
@@ -14,23 +19,30 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     let revealCard = false;
     // image loading optimization: prepare to reveal a card
     if (ctx.activePlayers[i] === "revealCard") {
-      revealCard = G.turnLog.challenge.revealedCard.length !== 0 && card.id === G.turnLog.challenge.revealedCard.id;
+      revealCard =
+        G.turnLog.challenge.revealedCard.length !== 0 &&
+        card.id === G.turnLog.challenge.revealedCard.id;
       G.players[i].hand.forEach((card) => {
         const img = new Image();
         img.src = card.front;
       });
     }
     hand.push(
-      <img
-        key={uniqid()}
-        className={classNames(
-          "character-card",
-          { "character-card-discarded": card.discarded },
-          { "character-card-reveal": revealCard }
-        )}
-        src={card.discarded ? "//:0" : gameOver || revealCard ? card.front : "/images/back.PNG"}
-        alt={card.discarded ? "" : "card"}
-      />
+      card.discarded ? (
+        <div
+          key={uniqid()}
+          className="character-card character-card-discarded"
+        ></div>
+      ) : (
+        <img
+          key={player.id + player.name}
+          className={classNames("character-card", {
+            "character-card-reveal": revealCard,
+          })}
+          src={gameOver || revealCard ? card.front : "/images/back.PNG"}
+          alt={gameOver || revealCard ? card.character : "card"}
+        />
+      )
     );
   });
 
@@ -102,10 +114,21 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
           </div>
         ) : (
           <div className="coin-row no-gutters">
-            <div className="w-50 h-100 d-flex justify-content-end" style={{ paddingRight: "1%" }}>
-              <img draggable={false} className="img-fluid h-100" src="/images/coin.png" alt="coins" />
+            <div
+              className="w-50 h-100 d-flex justify-content-end"
+              style={{ paddingRight: "1%" }}
+            >
+              <img
+                draggable={false}
+                className="img-fluid h-100"
+                src="/images/coin.png"
+                alt="coins"
+              />
             </div>
-            <div className="w-50 d-flex align-items-center" style={{ paddingLeft: "1%" }}>
+            <div
+              className="w-50 d-flex align-items-center"
+              style={{ paddingLeft: "1%" }}
+            >
               {player.coins}
               <div className="response-icon" style={{ color: `${iconColor}` }}>
                 {G.turnLog.responses[i] !== "" ? (

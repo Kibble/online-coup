@@ -13,12 +13,14 @@ import "./Room.scss";
 const api = new LobbyAPI();
 
 const { origin, protocol, hostname } = window.location;
-const SERVER_URL = APP_PRODUCTION ? origin : `${protocol}//${hostname}:${DEFAULT_PORT}`;
+const SERVER_URL = APP_PRODUCTION
+  ? origin
+  : `${protocol}//${hostname}:${DEFAULT_PORT}`;
 
 const CoupClient = Client({
   game: Coup,
   board: Board,
-  debug: true,
+  debug: false,
   multiplayer: SocketIO({ server: SERVER_URL }),
 });
 
@@ -77,9 +79,15 @@ const Room = (props) => {
   };
 
   const leaveRoom = () => {
-    api.leaveRoom(id, localStorage.getItem("id"), localStorage.getItem("credentials")).then(() => {
-      history.push("/");
-    });
+    api
+      .leaveRoom(
+        id,
+        localStorage.getItem("id"),
+        localStorage.getItem("credentials")
+      )
+      .then(() => {
+        history.push("/");
+      });
   };
 
   if (show) {
@@ -98,7 +106,12 @@ const Room = (props) => {
         <div className="players-list">
           {players.map((player) => {
             if (player.name) {
-              return player.name + `${player.name === localStorage.getItem("name") ? " (You)" : ""}\n`;
+              return (
+                player.name +
+                `${
+                  player.name === localStorage.getItem("name") ? " (You)" : ""
+                }\n`
+              );
             } else {
               return "...\n";
             }
@@ -116,7 +129,11 @@ const Room = (props) => {
               {copied ? "copied" : "copy"}
             </button>
           </div>
-          <div>Game will begin once all{players.length === 0 ? "" : ` ${players.length}`} players have joined.</div>
+          <div>
+            Game will begin once all
+            {players.length === 0 ? "" : ` ${players.length}`} players have
+            joined.
+          </div>
           <button className="leave-btn" onClick={leaveRoom}>
             leave
           </button>
