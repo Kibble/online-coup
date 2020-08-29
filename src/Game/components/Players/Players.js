@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import uniqid from "uniqid";
 import Player from "./Player";
 import "./Players.scss";
 

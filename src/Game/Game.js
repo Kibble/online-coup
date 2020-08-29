@@ -29,6 +29,9 @@ const setup = ({ numPlayers }) => {
 
 const message = (G, ctx, id, content) => {
   G.chat.push({ id, content });
+  if (G.chat.length > 40) {
+    G.chat.shift();
+  }
 };
 
 const changeNames = (G, ctx, playerList) => {
@@ -70,7 +73,10 @@ const setHand = (G, ctx, cardID) => {
     for (let i = 0; i < newHand.length; i++) {
       const newCardID = newHand[i];
       if (newCardID !== -1) {
-        const newCard = newCardID < 2 ? oldHand[newCardID] : G.turnLog.exchange.drawnCards[newCardID - 2];
+        const newCard =
+          newCardID < 2
+            ? oldHand[newCardID]
+            : G.turnLog.exchange.drawnCards[newCardID - 2];
         hand[i].character = newCard.character;
         hand[i].front = newCard.front;
       }
@@ -91,7 +97,10 @@ const setHand = (G, ctx, cardID) => {
       }
     }
     for (let i = 0; i < notUsed.length; i++) {
-      notUsed[i] = notUsed[i] < 2 ? oldHand[notUsed[i]] : G.turnLog.exchange.drawnCards[notUsed[i] - 2];
+      notUsed[i] =
+        notUsed[i] < 2
+          ? oldHand[notUsed[i]]
+          : G.turnLog.exchange.drawnCards[notUsed[i] - 2];
     }
     returnToDeck(G, notUsed);
     ctx.events.endTurn();
@@ -129,9 +138,19 @@ const endTurn = (G, ctx) => {
 };
 
 const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
-  returnToDeck(G, [Card(G.players[playerID].hand[cardID].character, G.players[playerID].hand[cardID].front)]);
+  returnToDeck(G, [
+    Card(
+      G.players[playerID].hand[cardID].character,
+      G.players[playerID].hand[cardID].front
+    ),
+  ]);
 
-  G.players[playerID].hand[cardID] = { character: "", front: "", discarded: true, id: cardID };
+  G.players[playerID].hand[cardID] = {
+    character: "",
+    front: "",
+    discarded: true,
+    id: cardID,
+  };
   updateIsOut(G.players[playerID]);
 
   if (
@@ -149,7 +168,10 @@ const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
         },
       });
     }
-  } else if (G.turnLog.action === "exchange" && Object.keys(G.turnLog.challenge) !== 0) {
+  } else if (
+    G.turnLog.action === "exchange" &&
+    Object.keys(G.turnLog.challenge) !== 0
+  ) {
     // redraw with the new deck
     G.turnLog.exchange.drawnCards = [
       { ...G.deck[G.deck.length - 1], id: 2 },
@@ -160,7 +182,10 @@ const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
       currentPlayer: "action",
       others: "idle",
     });
-  } else if (G.turnLog.action === "coup" || ctx.activePlayers[playerID].includes("lose")) {
+  } else if (
+    G.turnLog.action === "coup" ||
+    ctx.activePlayers[playerID].includes("lose")
+  ) {
     ctx.events.endTurn();
   }
 };
@@ -208,7 +233,10 @@ const allow = (G, ctx, playerID) => {
     if (G.turnLog.action === "steal") {
       ctx.events.endTurn();
     }
-  } else if (G.turnLog.responses.filter((response) => response === "allow").length === getNumAlivePlayers(G) - 1) {
+  } else if (
+    G.turnLog.responses.filter((response) => response === "allow").length ===
+    getNumAlivePlayers(G) - 1
+  ) {
     G.turnLog.successful = true;
     executeAction(G, ctx);
     // end for immediate actions, else return control back to currentPlayer
@@ -275,18 +303,33 @@ const revealCard = (G, ctx, playerID, cardID) => {
     name: G.players[playerID].hand[cardID].character,
     id: cardID,
   };
-  if (G.turnLog.challenge.characters.includes(G.turnLog.challenge.revealedCard.name)) {
+  if (
+    G.turnLog.challenge.characters.includes(
+      G.turnLog.challenge.revealedCard.name
+    )
+  ) {
     // failed challenge.
     G.turnLog.successful = true;
-    G.turnLog.challenge.loser = { name: G.turnLog.challenge.challenger.name, id: G.turnLog.challenge.challenger.id };
-    returnToDeck(G, [Card(G.players[playerID].hand[cardID].character, G.players[playerID].hand[cardID].front)]);
+    G.turnLog.challenge.loser = {
+      name: G.turnLog.challenge.challenger.name,
+      id: G.turnLog.challenge.challenger.id,
+    };
+    returnToDeck(G, [
+      Card(
+        G.players[playerID].hand[cardID].character,
+        G.players[playerID].hand[cardID].front
+      ),
+    ]);
 
     const { character, front } = G.deck.pop();
     G.turnLog.challenge.swapCard = { character, front };
   } else {
     // successful challenge
     G.turnLog.challenge.successful = true;
-    G.turnLog.challenge.loser = { name: G.turnLog.challenge.challenged.name, id: G.turnLog.challenge.challenged.id };
+    G.turnLog.challenge.loser = {
+      name: G.turnLog.challenge.challenged.name,
+      id: G.turnLog.challenge.challenged.id,
+    };
     loseCardAndShuffle(G, ctx, playerID, cardID);
   }
 
@@ -298,7 +341,10 @@ const revealCard = (G, ctx, playerID, cardID) => {
 
 const continueTurn = (G, ctx) => {
   // winner of challenge draws new card
-  const newCard = G.players[G.turnLog.challenge.challenged.id].hand[G.turnLog.challenge.revealedCard.id];
+  const newCard =
+    G.players[G.turnLog.challenge.challenged.id].hand[
+      G.turnLog.challenge.revealedCard.id
+    ];
   newCard.character = G.turnLog.challenge.swapCard.character;
   newCard.front = G.turnLog.challenge.swapCard.front;
   // loser of challenge has to give up card
@@ -336,7 +382,8 @@ const executeAction = (G, ctx) => {
     }
   } else if (G.turnLog.action === "steal") {
     if (G.players[G.turnLog.target.id].coins < 2) {
-      G.players[ctx.currentPlayer].coins += G.players[G.turnLog.target.id].coins;
+      G.players[ctx.currentPlayer].coins +=
+        G.players[G.turnLog.target.id].coins;
       G.players[G.turnLog.target.id].coins = 0;
     } else {
       G.players[ctx.currentPlayer].coins += 2;
@@ -352,7 +399,17 @@ export const Coup = {
   setup: setup,
   turn: {
     onBegin: (G, ctx) => {
-      logTurn(G.turnLog, "", {}, false, {}, {}, {}, resetResponses(ctx.numPlayers), {});
+      logTurn(
+        G.turnLog,
+        "",
+        {},
+        false,
+        {},
+        {},
+        {},
+        resetResponses(ctx.numPlayers),
+        {}
+      );
       ctx.events.setActivePlayers({ currentPlayer: "action", others: "idle" });
     },
     onEnd: (G, ctx) => {
@@ -419,7 +476,17 @@ const updateIsOut = (player) => {
   }
 };
 
-const logTurn = (turnLog, action, player, successful, target, blockedBy, challenge, responses, exchange) => {
+const logTurn = (
+  turnLog,
+  action,
+  player,
+  successful,
+  target,
+  blockedBy,
+  challenge,
+  responses,
+  exchange
+) => {
   turnLog.action = action;
   turnLog.player = player;
   turnLog.successful = successful;

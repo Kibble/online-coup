@@ -28,7 +28,9 @@ const AnnouncementArea = (props) => {
         setMsg("choose an influence to give up (assassinated).");
         setMsgLoading(false);
       } else {
-        setMsg(`waiting for ${G.turnLog.target.name} to give up an influence (assassinated)`);
+        setMsg(
+          `waiting for ${G.turnLog.target.name} to give up an influence (assassinated)`
+        );
         setMsgLoading(true);
       }
     }
@@ -41,7 +43,9 @@ const AnnouncementArea = (props) => {
     ) {
       if (G.turnLog.player.id === playerID) {
         const numToChoose = hand.filter((card) => !card.discarded).length;
-        setMsg(`choose your new hand (${numToChoose}).\n the top two cards from the deck are:`);
+        setMsg(
+          `choose your new hand (${numToChoose}).\n the top two cards from the deck are:`
+        );
         setMsgLoading(false);
       } else {
         setMsg(`waiting for ${G.turnLog.player.name} to complete the exchange`);
@@ -65,9 +69,11 @@ const AnnouncementArea = (props) => {
           setMsgLoading(false);
         } else {
           setMsg(
-            `${isChallenger ? "you" : G.turnLog.challenge.challenger.name} challenge${
-              isChallenger ? "" : "s"
-            }!\n Waiting for ${G.turnLog.challenge.challenged.name}'s response`
+            `${
+              isChallenger ? "you" : G.turnLog.challenge.challenger.name
+            } challenge${isChallenger ? "" : "s"}!\n Waiting for ${
+              G.turnLog.challenge.challenged.name
+            }'s response`
           );
           setMsgLoading(true);
         }
@@ -84,7 +90,9 @@ const AnnouncementArea = (props) => {
                 G.turnLog.challenge.challenged.id === playerID
                   ? `your new card is ${G.turnLog.challenge.swapCard.character}.\n`
                   : ""
-              }waiting for ${G.turnLog.challenge.challenger.name} to give up an influence`
+              }waiting for ${
+                G.turnLog.challenge.challenger.name
+              } to give up an influence`
             );
             setMsgLoading(true);
           }
@@ -93,14 +101,19 @@ const AnnouncementArea = (props) => {
         else if (G.turnLog.challenge.successful) {
           setMsg(
             `${
-              G.turnLog.challenge.challenger.id === playerID ? "your" : `${G.turnLog.challenge.challenger.name}'s`
+              G.turnLog.challenge.challenger.id === playerID
+                ? "your"
+                : `${G.turnLog.challenge.challenger.name}'s`
             } challenge succeeds.`
           );
           setMsgLoading(false);
           timer = setTimeout(() => {
             if (G.turnLog.challenge.challenged.id === playerID) {
-              if (
-                (G.turnLog.action === "assassinate" && playerID === G.turnLog.target.id) ||
+              if (G.turnLog.action === "steal") {
+                moves.endTurn();
+              } else if (
+                (G.turnLog.action === "assassinate" &&
+                  playerID === G.turnLog.target.id) ||
                 Object.keys(G.turnLog.blockedBy).length !== 0
               ) {
                 moves.executeAction();
@@ -108,7 +121,7 @@ const AnnouncementArea = (props) => {
                 moves.endTurn();
               }
             }
-          }, 2500);
+          }, 2000);
         }
         // challenge fails
         else {
@@ -118,13 +131,19 @@ const AnnouncementArea = (props) => {
             );
           } else {
             setMsg(
-              `${G.turnLog.challenge.challenged.name} reveals ${G.turnLog.challenge.revealedCard.name}.\n${
-                G.turnLog.challenge.challenger.id === playerID ? "your" : `${G.turnLog.challenge.challenger.name}'s`
+              `${G.turnLog.challenge.challenged.name} reveals ${
+                G.turnLog.challenge.revealedCard.name
+              }.\n${
+                G.turnLog.challenge.challenger.id === playerID
+                  ? "your"
+                  : `${G.turnLog.challenge.challenger.name}'s`
               } challenge fails!`
             );
           }
           setMsgLoading(false);
-          if (ctx.activePlayers.hasOwnProperty(G.turnLog.challenge.challenged.id)) {
+          if (
+            ctx.activePlayers.hasOwnProperty(G.turnLog.challenge.challenged.id)
+          ) {
             timer = setTimeout(() => {
               if (G.turnLog.challenge.challenged.id === playerID) {
                 if (
@@ -136,7 +155,7 @@ const AnnouncementArea = (props) => {
                 }
                 moves.continueTurn();
               }
-            }, 3500);
+            }, 3000);
           }
         }
       }
@@ -144,24 +163,38 @@ const AnnouncementArea = (props) => {
 
     // on block
     else if (Object.keys(G.turnLog.blockedBy).length !== 0) {
-      const blocksWith = G.turnLog.blockedBy.hasOwnProperty("character") && G.turnLog.blockedBy.character !== "";
-      if (G.turnLog.action === "steal" && G.turnLog.blockedBy.character === "") {
+      const blocksWith =
+        G.turnLog.blockedBy.hasOwnProperty("character") &&
+        G.turnLog.blockedBy.character !== "";
+      if (
+        G.turnLog.action === "steal" &&
+        G.turnLog.blockedBy.character === ""
+      ) {
         if (playerID === G.turnLog.blockedBy.id) {
           setMsg("choose a character to block with.");
           setMsgLoading(false);
         }
       } else if (!isYourTurn) {
-        let blockedMsg = G.turnLog.blockedBy.id === playerID ? `you block` : `${G.turnLog.blockedBy.name} blocks`;
+        let blockedMsg =
+          G.turnLog.blockedBy.id === playerID
+            ? `you block`
+            : `${G.turnLog.blockedBy.name} blocks`;
         if (blocksWith) {
           blockedMsg += ` with ${G.turnLog.blockedBy.character}`;
         }
         blockedMsg += "!";
-        setMsg(`${blockedMsg}\nwaiting for ${blocksWith ? "a" : `${name}'s`} response`);
+        setMsg(
+          `${blockedMsg}\nwaiting for ${
+            blocksWith ? "a" : `${name}'s`
+          } response`
+        );
         setMsgLoading(true);
       } else {
         setMsg(
           `${G.turnLog.blockedBy.name} blocks your ${
-            G.turnLog.action === "assassinate" ? "assassination" : G.turnLog.action
+            G.turnLog.action === "assassinate"
+              ? "assassination"
+              : G.turnLog.action
           }${blocksWith ? ` with ${G.turnLog.blockedBy.character}` : ""}.`
         );
         setMsgLoading(false);
@@ -170,7 +203,8 @@ const AnnouncementArea = (props) => {
 
     // targetable actions
     else if (playerTargetedActions.includes(G.turnLog.action)) {
-      let action = G.turnLog.action === "steal" ? "steal from" : G.turnLog.action;
+      let action =
+        G.turnLog.action === "steal" ? "steal from" : G.turnLog.action;
       if (!isYourTurn) {
         if (Object.keys(G.turnLog.target).length === 0) {
           setMsg(`${name} is choosing someone to ${action}`);
@@ -178,7 +212,9 @@ const AnnouncementArea = (props) => {
         } else {
           if (G.turnLog.action === "coup") {
             setMsg(
-              `${name} initiates a coup against ${G.turnLog.target.id === playerID ? "you" : G.turnLog.target.name}`
+              `${name} initiates a coup against ${
+                G.turnLog.target.id === playerID ? "you" : G.turnLog.target.name
+              }`
             );
             setMsgLoading(true);
           } else {
@@ -186,8 +222,11 @@ const AnnouncementArea = (props) => {
               setMsg(`${name} chooses to ${action} you.`);
               setMsgLoading(false);
             } else {
-              action = G.turnLog.action === "steal" ? "steals from" : action + "s";
-              setMsg(`${name} ${action} ${G.turnLog.target.name}.\nwaiting for a response`);
+              action =
+                G.turnLog.action === "steal" ? "steals from" : action + "s";
+              setMsg(
+                `${name} ${action} ${G.turnLog.target.name}.\nwaiting for a response`
+              );
               setMsgLoading(true);
             }
           }
@@ -217,18 +256,40 @@ const AnnouncementArea = (props) => {
     if (timer) {
       return () => clearTimeout(timer);
     }
-  }, [G.turnLog, ctx.activePlayers, ctx.currentPlayer, moves, hand, isYourTurn, name, playerID]);
+
+    return () => clearTimeout(timer);
+  }, [
+    G.turnLog,
+    ctx.activePlayers,
+    ctx.currentPlayer,
+    moves,
+    hand,
+    isYourTurn,
+    name,
+    playerID,
+  ]);
 
   useEffect(() => {
     if (G.winner.id !== "-1") {
-      setMsg(`Game over!\n${name} ${G.winner.id === playerID ? "are" : "is"} the winner.`);
+      setMsg(
+        `Game over!\n${name} ${
+          G.winner.id === playerID ? "are" : "is"
+        } the winner.`
+      );
       setMsgLoading(false);
     }
   }, [G.winner, name, playerID]);
 
   return (
-    <div className={classNames("announcement-area", { "announcement-area-offset": msgLoading })}>
-      <div key={msg} className={classNames("turn-message", { "msg-loading": msgLoading })}>
+    <div
+      className={classNames("announcement-area", {
+        "announcement-area-offset": msgLoading,
+      })}
+    >
+      <div
+        key={msg}
+        className={classNames("turn-message", { "msg-loading": msgLoading })}
+      >
         {msg}
         <span style={{ marginLeft: "0.01vw" }}></span>
       </div>

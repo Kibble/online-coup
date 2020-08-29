@@ -40,7 +40,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
   };
 
   const hand = [];
-  player.hand.forEach((card) => {
+  player.hand.forEach((card, index) => {
     let cardClass = "";
     if (
       (cardSelected && G.turnLog.challenge.revealedCard.id === card.id) ||
@@ -65,7 +65,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
         ></div>
       ) : (
         <img
-          key={player.id + card.character}
+          key={player.id + card.character + index}
           className={`character-card ${cardClass}`}
           src={card.front}
           onClick={() => {

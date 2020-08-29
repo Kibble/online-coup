@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Players, YourPlayer, Actions, AnnouncementArea, ChatLog } from "./components";
+import {
+  Players,
+  YourPlayer,
+  Actions,
+  AnnouncementArea,
+  ChatLog,
+} from "./components";
 import "./Board.css";
 
 const Board = (props) => {
