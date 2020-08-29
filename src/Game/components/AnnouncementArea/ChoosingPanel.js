@@ -54,10 +54,16 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
     };
 
     const leaveRoom = () => {
-      api.leaveRoom(gameID, localStorage.getItem("id"), localStorage.getItem("credentials")).then(() => {
-        localStorage.clear();
-        window.location.href = "/";
-      });
+      api
+        .leaveRoom(
+          gameID,
+          localStorage.getItem("id"),
+          localStorage.getItem("credentials")
+        )
+        .then(() => {
+          localStorage.clear();
+          window.location.href = "/";
+        });
     };
 
     let temp = [];
@@ -108,7 +114,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
               coup(card.character);
             }}
             src={card.front}
-            alt={card.name}
+            alt={card.character}
             hidden={Object.keys(G.turnLog.target).length === 0}
           />
         );
@@ -119,10 +125,11 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       // image loading optimization with hidden
       G.turnLog.exchange.drawnCards.forEach((card) => {
         const cardSelected =
-          G.turnLog.exchange.hasOwnProperty("newHand") && G.turnLog.exchange.newHand.includes(card.id);
+          G.turnLog.exchange.hasOwnProperty("newHand") &&
+          G.turnLog.exchange.newHand.includes(card.id);
         temp.push(
           <img
-            key={uniqid()}
+            key={"choice" + card.character}
             className={classNames("big-character-choice", {
               "card-selected": cardSelected,
             })}
@@ -130,14 +137,19 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
               setHand(card.id);
             }}
             src={card.front}
-            alt={card.name}
-            hidden={!G.turnLog.successful || ctx.activePlayers[playerID] !== "action"}
+            alt={card.character}
+            hidden={
+              !G.turnLog.successful || ctx.activePlayers[playerID] !== "action"
+            }
           />
         );
       });
     }
     // show possible player responses
-    else if (!G.players[playerID].isOut && G.turnLog.responses[playerID] === "") {
+    else if (
+      !G.players[playerID].isOut &&
+      G.turnLog.responses[playerID] === ""
+    ) {
       if (ctx.activePlayers[playerID] === "block") {
         temp.push(
           <button key={uniqid()} className="choice-btn" onClick={allow}>
@@ -179,7 +191,17 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       }
     }
     setChoices(temp);
-  }, [G.turnLog, G.players, ctx.currentPlayer, ctx.activePlayers, playerID, moves, isYourTurn, G.winner.id, gameID]);
+  }, [
+    G.turnLog,
+    G.players,
+    ctx.currentPlayer,
+    ctx.activePlayers,
+    playerID,
+    moves,
+    isYourTurn,
+    G.winner.id,
+    gameID,
+  ]);
 
   return <div className="choosing-panel">{choices}</div>;
 };

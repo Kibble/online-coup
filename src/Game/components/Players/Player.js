@@ -15,7 +15,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
   const gameOver = G.winner.id !== "-1";
 
   const hand = [];
-  player.hand.forEach((card) => {
+  player.hand.forEach((card, cardIndex) => {
     let revealCard = false;
     // image loading optimization: prepare to reveal a card
     if (ctx.activePlayers[i] === "revealCard") {
@@ -35,7 +35,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
         ></div>
       ) : (
         <img
-          key={player.id + player.name}
+          key={player.name + cardIndex}
           className={classNames("character-card", {
             "character-card-reveal": revealCard,
           })}

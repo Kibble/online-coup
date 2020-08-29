@@ -10,15 +10,20 @@ const Players = (props) => {
   for (let i = 0; i < ctx.numPlayers; i++) {
     if (i !== parseInt(playerID)) {
       players.push(
-        <div key={uniqid()} className="player-container">
+        <div
+          key={props.G.players[i].id + props.G.players[i].name}
+          className="player-container"
+        >
           <Player {...props} i={i} />
         </div>
       );
     } else if (i !== 0 && i !== ctx.numPlayers - 1) {
       players.push(
-        <div key={uniqid()} className="d-flex align-items-center h-100">
+        <div key="position marker" className="d-flex align-items-center h-100">
           <div
-            className={classNames("position-marker", { "position-marker-active": playerID === ctx.currentPlayer })}
+            className={classNames("position-marker", {
+              "position-marker-active": playerID === ctx.currentPlayer,
+            })}
           ></div>
         </div>
       );
