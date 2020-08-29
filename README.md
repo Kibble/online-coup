@@ -3,8 +3,8 @@ A clone of Coup built using React.js and boardgame.io featuring a lobby, turn lo
 **Link to play:** https://online-coup.herokuapp.com/
 
 ## About
-Coup is a popular strategy board game revolved around deception. Be the last one standing to win! <br>
-This game can be played online with 2-8 players. <br>
+Coup is a popular strategy board game revolved around deception. <br>
+This game can be played online with 2-8 players. When playing with 6 or less players, the deck will consist of 15 total cards (3 of each character card). When playing with more than 6 players, the deck will consist of 20 total cards (4 of each character card). <br>
 
 **Link to official rules:** https://www.ultraboardgames.com/coup/game-rules.php <br>
 
