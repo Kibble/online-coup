@@ -6,7 +6,7 @@ A clone of Coup built using React.js and boardgame.io featuring a lobby, turn lo
 ## About
 
 Coup is a popular strategy board game revolved around deception. <br>
-This game can be played online with 2-8 players. When playing with 6 or less players, the deck will consist of 15 total cards (3 of each character card). When playing with more than 6 players, the deck will consist of 20 total cards (4 of each character card). <br>
+This game can be played online with 2-8 players. <br>
 
 **Link to the official rules:** https://www.ultraboardgames.com/coup/game-rules.php <br>
 
@@ -15,6 +15,7 @@ This game can be played online with 2-8 players. When playing with 6 or less pla
 
 ### Rule Modifications/Clarification
 
+- With 6 or less players, the deck will have 15 total cards (3 of each character). With 7 or 8 players, the deck will have 20 total cards (4 of each character). <br>
 - The first player is decided randomly. Turns pass in a clockwise fashion. If you are not first or last, a dashed line will clarify your turn order.
 - A coup involves an additional character selection and will be unsuccessful if the targeted player does not possess the targeted character.
 - It is possible to steal from a player with zero coins, though stealing in this case will produce no net gain or loss of coins from either side if successful.
