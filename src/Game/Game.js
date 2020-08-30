@@ -29,7 +29,7 @@ const setup = ({ numPlayers }) => {
 
 const message = (G, ctx, id, content) => {
   G.chat.push({ id, content });
-  if (G.chat.length > 40) {
+  if (G.chat.length > 35) {
     G.chat.shift();
   }
 };
@@ -417,7 +417,7 @@ export const Coup = {
       checkForWinner(G);
     },
     order: {
-      first: (G, ctx) => 0,
+      first: (G, ctx) => Math.floor(Math.random() * ctx.numPlayers),
       // find the next player who has cards (isOut)
       next: ({ players }, { numPlayers, playOrderPos }) => {
         for (let i = 1; i <= numPlayers; i++) {
@@ -463,7 +463,7 @@ export const Coup = {
         moves: { loseCardAndShuffle, message },
       },
       idle: {
-        moves: { message },
+        moves: { changeNames, message },
       },
     },
   },

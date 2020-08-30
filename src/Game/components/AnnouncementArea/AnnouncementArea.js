@@ -110,6 +110,9 @@ const AnnouncementArea = (props) => {
           timer = setTimeout(() => {
             if (G.turnLog.challenge.challenged.id === playerID) {
               if (G.turnLog.action === "steal") {
+                if (Object.keys(G.turnLog.blockedBy).length !== 0) {
+                  moves.executeAction();
+                }
                 moves.endTurn();
               } else if (
                 (G.turnLog.action === "assassinate" &&

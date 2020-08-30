@@ -12,9 +12,22 @@ export const getTurnMsg = (turnLog) => {
   } else if (turnLog.action === "steal") {
     target = ` from ${turnLog.target.name}`;
   }
+  let addendum = "";
+  if (
+    turnLog.challenge &&
+    Object.keys(turnLog.challenge).length !== 0 &&
+    turnLog.blockedBy &&
+    Object.keys(turnLog.blockedBy).length !== 0
+  ) {
+    addendum = " (blocked, challenged)";
+  } else if (turnLog.challenge && Object.keys(turnLog.challenge).length !== 0) {
+    addendum = " (challenged)";
+  } else if (turnLog.blockedBy && Object.keys(turnLog.blockedBy).length !== 0) {
+    addendum = " (blocked)";
+  }
   const turnMsg = `${turnLog.player.name} ${success}${turnLog.action}${
     turnLog.action === "tax" ? "es" : "s"
-  }${target}.`;
+  }${target}${addendum}.`;
 
   return turnMsg;
 };

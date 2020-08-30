@@ -18,7 +18,7 @@ export const initializeGame = (numPlayers) => {
   // give each player their starting cards and coins
   for (let i = 0; i < numPlayers; i++) {
     players.push({
-      name: "Player " + i,
+      name: "",
       isOut: false,
       hand: [
         { ...deck.pop(), discarded: false, id: 0 },
