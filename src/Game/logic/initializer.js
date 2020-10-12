@@ -15,7 +15,7 @@ export const initializeGame = (numPlayers) => {
 
   shuffleDeck(deck);
 
-  // give each player their starting cards and coins
+  // give each player their starting cards and coins, initialize their own player state
   for (let i = 0; i < numPlayers; i++) {
     players.push({
       name: "",
@@ -33,7 +33,7 @@ export const initializeGame = (numPlayers) => {
 };
 
 export const shuffleDeck = (deck) => {
-  // shuffle deck (using Fisher-Yates algorithm)
+  // shuffle deck (using Fisher-Yates algorithm, might've been overkill since deck is only ~20 at most)
   for (let i = deck.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
     [deck[i], deck[j]] = [deck[j], deck[i]];

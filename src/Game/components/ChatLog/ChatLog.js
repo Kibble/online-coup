@@ -14,18 +14,19 @@ const ChatLog = ({ G, ctx, playerID, moves }) => {
     setMsg("");
   };
 
-  useEffect(() => {
+  useEffect(() => {   // when a new message appear, automatically scroll chat box (when applicable) to bottom to show it
     let objDiv = document.getElementById("scrollBottom");
     objDiv.scrollTop = objDiv.scrollHeight;
   }, [G.chat]);
 
   const handleKeyUp = (e) => {
     e.preventDefault();
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13) {   // enter key: another way to send a message
       document.getElementById("send-button").click();
     }
   };
 
+  // bot message is just output of turn log's message
   return (
     <div className="chat-container">
       <div className="chat-title">chat & turn log</div>

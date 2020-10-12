@@ -17,7 +17,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
   const hand = [];
   player.hand.forEach((card, cardIndex) => {
     let revealCard = false;
-    // image loading optimization: prepare to reveal a card
+    // TODO: image optimization... only have a primitive attempt 
     if (ctx.activePlayers[i] === "revealCard") {
       revealCard =
         G.turnLog.challenge.revealedCard.length !== 0 &&
@@ -39,7 +39,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
           className={classNames("character-card", {
             "character-card-reveal": revealCard,
           })}
-          src={gameOver || revealCard ? card.front : "/images/back.PNG"}
+          src={gameOver || revealCard ? card.front : "/images/back.PNG"}  // on game over, reveal the winner's cards to everyone
           alt={gameOver || revealCard ? card.character : "card"}
         />
       )
@@ -56,6 +56,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     !player.isOut;
   const targeted = i === parseInt(G.turnLog.target.id);
 
+  // for coup, player must select another player as the target
   const setTarget = () => {
     if (canSelectPlayer) {
       const { name, id } = player;
@@ -63,7 +64,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     }
   };
 
-  /* css */
+  /* animation/styling stuff */
 
   let animate = "";
   if (player.isOut) {
@@ -80,6 +81,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     }
   }
 
+  // little icon to indicate a player's counterresponse
   let iconColor = "";
   if (G.turnLog.responses[i] === "allow") {
     iconColor = "#008000";

@@ -11,6 +11,7 @@ const AnnouncementArea = (props) => {
   const [msg, setMsg] = useState("");
   const [msgLoading, setMsgLoading] = useState(true);
 
+  // display at beginning of turn 
   useEffect(() => {
     setMsg(isYourTurn ? `${name}r turn` : `${name}'s turn`);
     setMsgLoading(true);
@@ -18,6 +19,7 @@ const AnnouncementArea = (props) => {
 
   const hand = G.players[playerID].hand;
 
+  // bulk of announcements happen here (i.e. the middle of the turn):
   useEffect(() => {
     const playerTargetedActions = ["coup", "assassinate", "steal"];
     let timer;
@@ -107,7 +109,7 @@ const AnnouncementArea = (props) => {
             } challenge succeeds.`
           );
           setMsgLoading(false);
-          timer = setTimeout(() => {
+          timer = setTimeout(() => {    // timer to allow players time to read announcements, but also advance the game "automatically" when necessary
             if (G.turnLog.challenge.challenged.id === playerID) {
               if (G.turnLog.action === "steal") {
                 if (Object.keys(G.turnLog.blockedBy).length !== 0) {
@@ -147,7 +149,7 @@ const AnnouncementArea = (props) => {
           if (
             ctx.activePlayers.hasOwnProperty(G.turnLog.challenge.challenged.id)
           ) {
-            timer = setTimeout(() => {
+            timer = setTimeout(() => {    // timer to allow players time to read announcements, but also advance the game "automatically" when necessary
               if (G.turnLog.challenge.challenged.id === playerID) {
                 if (
                   G.turnLog.action !== "exchange" &&
@@ -204,7 +206,7 @@ const AnnouncementArea = (props) => {
       }
     }
 
-    // targetable actions
+    // targetable actions i.e. coup, assassinate, steal
     else if (playerTargetedActions.includes(G.turnLog.action)) {
       let action =
         G.turnLog.action === "steal" ? "steal from" : G.turnLog.action;
@@ -246,7 +248,7 @@ const AnnouncementArea = (props) => {
       }
     }
 
-    // any blockable or challengable action
+    // any blockable or challengable action (trying to generalize when I can)
     else if (ctx.activePlayers[ctx.currentPlayer] !== "action") {
       if (!isYourTurn) {
         setMsg(`${name} attempts to ${G.turnLog.action}.`);
@@ -272,6 +274,7 @@ const AnnouncementArea = (props) => {
     playerID,
   ]);
 
+  // on game over
   useEffect(() => {
     if (G.winner.id !== "-1") {
       setMsg(

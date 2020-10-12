@@ -6,11 +6,11 @@ const Actions = ({ G, ctx, playerID, moves }) => {
   const yourPlayer = G.players[playerID];
   const isYourTurn = ctx.currentPlayer === playerID;
 
-  // actions
+  // game specifications for actions
   const canCoup = yourPlayer.coins >= 7;
   const mustCoup = yourPlayer.coins >= 10;
   const canAssassinate = yourPlayer.coins >= 3;
-  const done = ctx.currentPlayer === G.turnLog.player.id || G.winner.id !== "-1";
+  const done = ctx.currentPlayer === G.turnLog.player.id || G.winner.id !== "-1"; // cannot select actions
 
   const income = () => {
     moves.income();

@@ -1,3 +1,4 @@
+// to display to the chat once a turn ends
 export const getTurnMsg = (turnLog) => {
   let success = turnLog.successful ? "successfully " : "unsuccessfully ";
   let target = "";
@@ -12,6 +13,8 @@ export const getTurnMsg = (turnLog) => {
   } else if (turnLog.action === "steal") {
     target = ` from ${turnLog.target.name}`;
   }
+  
+  // addendum describes if there were counteractions to the player's action
   let addendum = "";
   if (
     turnLog.challenge &&
@@ -25,6 +28,7 @@ export const getTurnMsg = (turnLog) => {
   } else if (turnLog.blockedBy && Object.keys(turnLog.blockedBy).length !== 0) {
     addendum = " (blocked)";
   }
+
   const turnMsg = `${turnLog.player.name} ${success}${turnLog.action}${
     turnLog.action === "tax" ? "es" : "s"
   }${target}${addendum}.`;

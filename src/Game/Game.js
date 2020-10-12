@@ -3,10 +3,13 @@ import { initializeGame, shuffleDeck } from "./logic/initializer";
 import { getTurnMsg } from "./logic/messageBuilder";
 import { GAME_NAME } from "../config";
 
+/* TODO: CLEANUP CODE and make code more readabkle :( it works! but looks sort of cluttered */
+
 /* ---- Setup ---- */
 const setup = ({ numPlayers }) => {
   const { deck, players } = initializeGame(numPlayers);
 
+  // initialize game state G
   return {
     deck: deck,
     players: players,
@@ -25,11 +28,12 @@ const setup = ({ numPlayers }) => {
   };
 };
 
-/* ---- Intermediary Actions ---- */
+/* ---- Intermediary Character Actions ---- */
 
 const message = (G, ctx, id, content) => {
   G.chat.push({ id, content });
-  if (G.chat.length > 35) {
+  // TODO: save chat and game state data into database... don't want to clutter poor webpage with chat if it gets flooded
+  if (G.chat.length > 35) {      
     G.chat.shift();
   }
 };
@@ -40,13 +44,14 @@ const changeNames = (G, ctx, playerList) => {
   }
 };
 
+// Character actions: coup, steal, assassinate 
 const setTarget = (G, ctx, target) => {
   G.turnLog.target = target;
   if (G.turnLog.action === "steal" || G.turnLog.action === "assassinate") {
-    if (G.turnLog.action === "assassinate") {
+    if (G.turnLog.action === "assassinate") {   // subtract coins after assassin choose target
       G.players[ctx.currentPlayer].coins -= 3;
     }
-    ctx.events.setActivePlayers({
+    ctx.events.setActivePlayers({   // steal and assassinate can be blocked or challenged
       all: "idle",
       value: {
         [target.id]: "blockOrChallenge",
@@ -55,15 +60,16 @@ const setTarget = (G, ctx, target) => {
   }
 };
 
+// Character action: exchange, choose one card at a time
 const setHand = (G, ctx, cardID) => {
   const { hand } = G.players[ctx.currentPlayer];
   const { newHand } = G.turnLog.exchange;
   if (!newHand.includes(cardID)) {
-    let index = newHand.findIndex((card) => card === "");
+    let index = newHand.findIndex((card) => card === ""); // find next available card in hand (either 0 or 1)
     newHand[index] = cardID;
   }
 
-  // done choosing
+  // done choosing: update player's hand accordingly
   if (!newHand.includes("")) {
     const oldHand = [];
     for (let i = 0; i < hand.length; i++) {
@@ -72,17 +78,17 @@ const setHand = (G, ctx, cardID) => {
     }
     for (let i = 0; i < newHand.length; i++) {
       const newCardID = newHand[i];
-      if (newCardID !== -1) {
+      if (newCardID !== -1) {     // -1 indicates card is discarded
         const newCard =
-          newCardID < 2
+          newCardID < 2           // check whether to update from the original hand or from the two cards draw
             ? oldHand[newCardID]
             : G.turnLog.exchange.drawnCards[newCardID - 2];
         hand[i].character = newCard.character;
         hand[i].front = newCard.front;
       }
     }
+    // return cards that weren't chosen to the deck    
     let notUsed = [];
-    // return cards that weren't used to deck
     for (let i = 0; i <= 1; i++) {
       if (!hand[i].discarded) {
         notUsed.push(i);
@@ -90,12 +96,14 @@ const setHand = (G, ctx, cardID) => {
     }
     notUsed.push(2);
     notUsed.push(3);
+    // notUsed contains all the cards you could've chosen: now, only choose the cards that weren't chosen
     let i = notUsed.length;
     while (i--) {
       if (newHand.includes(notUsed[i])) {
         notUsed.splice(i, 1);
       }
     }
+    // select those unchosen cards from either the original hand or from the two cards drawn
     for (let i = 0; i < notUsed.length; i++) {
       notUsed[i] =
         notUsed[i] < 2
@@ -105,8 +113,8 @@ const setHand = (G, ctx, cardID) => {
     returnToDeck(G, notUsed);
     ctx.events.endTurn();
   }
-};
 
+// Update turnLog as soon as player selects an action, and prepare as necessary (updating active players, setting up ambassador's drawn cards)
 const prepAction = (G, ctx, action) => {
   G.turnLog.action = action;
   const { name, id } = G.players[ctx.currentPlayer];
@@ -137,6 +145,7 @@ const endTurn = (G, ctx) => {
   ctx.events.endTurn();
 };
 
+// Character action: losing a challenge, assassinate, exchange, coup
 const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
   returnToDeck(G, [
     Card(
@@ -153,14 +162,14 @@ const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
   };
   updateIsOut(G.players[playerID]);
 
-  if (
+  if (    // Player gets assassinated
     G.turnLog.action === "assassinate" &&
     playerID === G.turnLog.target.id &&
     ctx.activePlayers[playerID] === "loseCard"
   ) {
     if (G.players[playerID].isOut) {
       ctx.events.endTurn();
-    } else {
+    } else {    // Possibility of assassin double kill: after player loses challenge and gives up an influence, then carry out the successful assassination 
       ctx.events.setActivePlayers({
         all: "idle",
         value: {
@@ -168,11 +177,12 @@ const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
         },
       });
     }
-  } else if (
+  } else if (   // Player attempts to exchange, gets challenged, and reveals ambassador successfully.
     G.turnLog.action === "exchange" &&
     Object.keys(G.turnLog.challenge) !== 0
   ) {
-    // redraw with the new deck
+    // redraw with the new deck (after returning ambassador to the deck)
+    // no possibility of array out of bounds because the game starts out with at least 2 cards in deck
     G.turnLog.exchange.drawnCards = [
       { ...G.deck[G.deck.length - 1], id: 2 },
       { ...G.deck[G.deck.length - 2], id: 3 },
@@ -182,7 +192,7 @@ const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
       currentPlayer: "action",
       others: "idle",
     });
-  } else if (
+  } else if (   // Player gets couped or loses challenge
     G.turnLog.action === "coup" ||
     ctx.activePlayers[playerID].includes("lose")
   ) {
@@ -199,9 +209,11 @@ const income = (G, ctx) => {
   ctx.events.endTurn();
 };
 
+// after player selects coup as action and a target...
 const coup = (G, ctx, targetCharacter) => {
   G.turnLog.target.character = targetCharacter;
   G.players[ctx.currentPlayer].coins -= 7;
+  // check if target has the targeted character card in his hand
   let indexes = [];
   const hand = G.players[G.turnLog.target.id].hand;
   for (let i = 0; i < hand.length; i++) {
@@ -222,24 +234,25 @@ const coup = (G, ctx, targetCharacter) => {
 
 /* ---- Character Counteractions ---- */
 
+// can "allow" for foreign aid and any character action
 const allow = (G, ctx, playerID) => {
-  const oneOnOneActions = ["assassinate", "steal"];
-  G.turnLog.responses[playerID] = "allow";
-  if (ctx.currentPlayer === playerID) {
+  const oneOnOneActions = ["assassinate", "steal"];   // only the targeted player can respond
+  G.turnLog.responses[playerID] = "allow";  
+  if (ctx.currentPlayer === playerID) {   // if another/targeted player blocks your action, and you allow that block (so your action is unsuccessful)
     ctx.events.endTurn();
-  } else if (oneOnOneActions.includes(G.turnLog.action)) {
+  } else if (oneOnOneActions.includes(G.turnLog.action)) {  // targeted player allows your action
     G.turnLog.successful = true;
-    executeAction(G, ctx);
-    if (G.turnLog.action === "steal") {
+    executeAction(G, ctx);      
+    if (G.turnLog.action === "steal") {   
       ctx.events.endTurn();
     }
-  } else if (
-    G.turnLog.responses.filter((response) => response === "allow").length ===
+  } else if (   // for foregin aid, if you are the last person to allow, then the action goes through
+    G.turnLog.responses.filter((response) => response === "allow").length ===   
     getNumAlivePlayers(G) - 1
   ) {
     G.turnLog.successful = true;
     executeAction(G, ctx);
-    // end for immediate actions, else return control back to currentPlayer
+    // end for immediate actions (i.e. actions that simply increase your coins), else return control back to currentPlayer to complete the action
     const immediateActions = ["foreign aid", "tax"];
     if (immediateActions.includes(G.turnLog.action)) {
       ctx.events.endTurn();
@@ -252,6 +265,7 @@ const allow = (G, ctx, playerID) => {
   }
 };
 
+// can "block" for foreign aid, assassinate and steal
 const block = (G, ctx, playerID, character) => {
   G.turnLog.responses[playerID] = "block";
   if (Object.keys(G.turnLog.blockedBy).length === 0) {
@@ -308,7 +322,7 @@ const revealCard = (G, ctx, playerID, cardID) => {
       G.turnLog.challenge.revealedCard.name
     )
   ) {
-    // failed challenge.
+    // failed challenge, so the action goes through.
     G.turnLog.successful = true;
     G.turnLog.challenge.loser = {
       name: G.turnLog.challenge.challenger.name,
@@ -324,7 +338,7 @@ const revealCard = (G, ctx, playerID, cardID) => {
     const { character, front } = G.deck.pop();
     G.turnLog.challenge.swapCard = { character, front };
   } else {
-    // successful challenge
+    // successful challenge, loser of challenge must give up card.
     G.turnLog.challenge.successful = true;
     G.turnLog.challenge.loser = {
       name: G.turnLog.challenge.challenged.name,
@@ -340,14 +354,14 @@ const revealCard = (G, ctx, playerID, cardID) => {
 };
 
 const continueTurn = (G, ctx) => {
-  // winner of challenge draws new card
+  // winner of challenge draws a new card (this occurs after revealing the correct card)
   const newCard =
     G.players[G.turnLog.challenge.challenged.id].hand[
       G.turnLog.challenge.revealedCard.id
     ];
   newCard.character = G.turnLog.challenge.swapCard.character;
   newCard.front = G.turnLog.challenge.swapCard.front;
-  // loser of challenge has to give up card
+  // loser of challenge has to give up one card
   ctx.events.setActivePlayers({
     all: "idle",
     value: {
@@ -366,7 +380,7 @@ const executeAction = (G, ctx) => {
     G.players[ctx.currentPlayer].coins += 3;
   } else if (G.turnLog.action === "exchange") {
     G.turnLog.exchange.newHand = getNewHand(G.players[ctx.currentPlayer].hand);
-    // drawnCards is already set, simply draw
+    // drawnCards is already set (for image optimization attempt), simply draw
     G.deck.pop();
     G.deck.pop();
   } else if (G.turnLog.action === "assassinate") {
@@ -381,7 +395,7 @@ const executeAction = (G, ctx) => {
       });
     }
   } else if (G.turnLog.action === "steal") {
-    if (G.players[G.turnLog.target.id].coins < 2) {
+    if (G.players[G.turnLog.target.id].coins < 2) { // allows player to steal 0 or 1 coin, and minimum # coins a player can have is 0
       G.players[ctx.currentPlayer].coins +=
         G.players[G.turnLog.target.id].coins;
       G.players[G.turnLog.target.id].coins = 0;
@@ -417,8 +431,8 @@ export const Coup = {
       checkForWinner(G);
     },
     order: {
-      first: (G, ctx) => Math.floor(Math.random() * ctx.numPlayers),
-      // find the next player who has cards (isOut)
+      first: (G, ctx) => Math.floor(Math.random() * ctx.numPlayers),  // first player is randomly chosen
+      // find the next player who has cards (skip over players who are out)
       next: ({ players }, { numPlayers, playOrderPos }) => {
         for (let i = 1; i <= numPlayers; i++) {
           let nextPlayer = (playOrderPos + i) % numPlayers;
@@ -471,11 +485,12 @@ export const Coup = {
 
 /* ---- Helper functions ---- */
 const updateIsOut = (player) => {
-  if (player.hand.filter((card) => !card.discarded).length === 0) {
+  if (player.hand.filter((card) => !card.discarded).length === 0) { // if both cards are discarded, then player is out
     player.isOut = true;
   }
 };
 
+// update turnLog in one line
 const logTurn = (
   turnLog,
   action,
@@ -497,7 +512,8 @@ const logTurn = (
   turnLog.exchange = exchange;
 };
 
-const resetResponses = (numPlayers) => {
+// reset responses, which consist of actions and counteractions, where index represents playerID
+const resetResponses = (numPlayers) => { 
   const responses = [];
   for (let i = 0; i < numPlayers; i++) {
     responses[i] = "";
@@ -507,7 +523,7 @@ const resetResponses = (numPlayers) => {
 
 const checkForWinner = (G) => {
   const playersAlive = G.players.filter((player) => !player.isOut);
-  if (playersAlive.length === 1) {
+  if (playersAlive.length === 1) {        // game is over when only 1 player is alive at the end of each turn
     G.winner.name = playersAlive[0].name;
     G.winner.id = playersAlive[0].id;
   }
@@ -517,6 +533,7 @@ const getNumAlivePlayers = (G) => {
   return G.players.filter((player) => !player.isOut).length;
 };
 
+// returns what characters can challenge the current action
 const getChallengeCharacters = (G, isBlocked) => {
   const action = G.turnLog.action;
   if (action === "foreign aid" || action === "tax") {
@@ -530,6 +547,7 @@ const getChallengeCharacters = (G, isBlocked) => {
   }
 };
 
+// returns a new, empty hand for preparing an exchange (discarded cards are marked by a -1)
 const getNewHand = (hand) => {
   const newHand = [];
   hand.forEach((card) => {

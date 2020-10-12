@@ -11,7 +11,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
   const isYourTurn = playerID === ctx.currentPlayer;
   const [choices, setChoices] = useState([]);
 
-  // image loading optimization: prepare to reveal a card
+  // image loading optimization: prepare to reveal top 2 cards from deck right after player chooses to exchange
   if (G.turnLog.action === "exchange" && G.turnLog.successful && isYourTurn) {
     cards.forEach((card) => {
       const img = new Image();
@@ -19,8 +19,8 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
     });
   }
 
+  // image loading optimization: prepare to reveal character options (captain, ambassador) right after player chooses to steal
   let stealBlocks = [cards[3], cards[2]];
-
   if (G.turnLog.action === "steal" && playerID === G.turnLog.target.id) {
     stealBlocks.forEach((card) => {
       const img = new Image();
@@ -60,7 +60,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
           localStorage.getItem("id"),
           localStorage.getItem("credentials")
         )
-        .then(() => {
+        .then(() => {   // leaving clears your localStorage to "reset" your identity and then takes you to homepage
           localStorage.clear();
           window.location.href = "/";
         });
@@ -68,7 +68,8 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
 
     let temp = [];
 
-    // game has ended
+    // TODO: let players leave anytime (AKA they are "out" to the other players to skip over leaving player's turn)
+    // game has ended: let players leave.
     if (G.winner.id !== "-1") {
       temp.push(
         <button key={uniqid()} className="leave-btn-big" onClick={leaveRoom}>
@@ -76,7 +77,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
         </button>
       );
     }
-    // show blocked choices
+    // for blocking steal: show character choices that can block steal (ambassador, captain)
     else if (
       G.turnLog.action === "steal" &&
       Object.keys(G.turnLog.blockedBy).length !== 0 &&
@@ -102,9 +103,9 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
         />
       );
     }
-    // show all possible cards
+    // for coup: show all possible cards to select a targeted character
     else if (G.turnLog.action === "coup" && isYourTurn) {
-      // image loading optimization with hidden
+      // image loading optimization (with hidden)
       cards.forEach((card) => {
         temp.push(
           <img

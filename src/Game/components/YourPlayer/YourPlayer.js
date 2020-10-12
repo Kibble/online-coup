@@ -38,7 +38,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
   const setHand = (cardID) => {
     moves.setHand(cardID);
   };
-
+ 
   const hand = [];
   player.hand.forEach((card, index) => {
     let cardClass = "";
@@ -52,11 +52,12 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
     } else if (cardSelectable) {
       cardClass = "card-selectable";
     }
-    // image loading optimization
+    // image loading optimization for when you successfully reveal a card to a challenge
     if (G.turnLog.challenge.hasOwnProperty("swapCard")) {
       const img = new Image();
       img.src = G.turnLog.challenge.swapCard.front;
     }
+
     hand.push(
       card.discarded ? (
         <div
@@ -69,6 +70,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
           className={`character-card ${cardClass}`}
           src={card.front}
           onClick={() => {
+            // handle card selection logic
             if (
               ctx.activePlayers[playerID] &&
               ctx.activePlayers[playerID].includes("lose") &&
@@ -90,6 +92,8 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
     );
   });
 
+  /* animation/styling stuff */
+
   let animate = "";
   if (player.isOut) {
     animate = "your-player-out";
@@ -101,6 +105,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
     animate = "your-player-inactive";
   }
 
+    // little icon to indicate your counterresponse
   let iconColor = "";
   if (G.turnLog.responses[playerID] === "allow") {
     iconColor = "#008000";

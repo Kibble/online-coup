@@ -18,10 +18,12 @@ const Home = (props) => {
   const cNameCount = maxNameLength - cName.length;
   const [errMsg, setErrMsg] = useState("");
 
+  // handle URL to a room that doesn't exist
   useEffect(() => {
     let timer;
     if (history.location.state && history.location.state.invalidRoom) {
       setErrMsg("room does not exist!");
+      // reset error message
       timer = setTimeout(() => {
         setErrMsg("");
         history.replace();
@@ -32,6 +34,7 @@ const Home = (props) => {
     };
   }, [history]);
 
+  // restrict inputs, specifically spaces (inspired by https://secret-hitler.online/)
   const handleKeyDown = (e, text) => {
     if (e.key === " ") {
       if (text) {
@@ -44,6 +47,7 @@ const Home = (props) => {
     }
   };
 
+  // store user information to localStorage to use later when we arrive at the room
   const saveInfo = (name, id, credentials) => {
     localStorage.setItem("name", name);
     localStorage.setItem("id", id);
@@ -66,11 +70,15 @@ const Home = (props) => {
           history.push("/rooms/" + roomID);
         });
       } else {
+        // handle name conflict error
         setErrMsg("name already taken!");
         setJName("");
         document.getElementById("joinName").value = "";
       }
     } catch (err) {
+      /*
+       * --- TO-DO: setErrMsg("room is full") here if that's the case. currently it's "room does not exist" in both cases ---
+       */ 
       setErrMsg("room does not exist!");
       setRoom("");
       document.getElementById("roomIdentification").value = "";

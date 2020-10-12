@@ -3,6 +3,7 @@ import classNames from "classnames";
 import Player from "./Player";
 import "./Players.scss";
 
+// row of players
 const Players = (props) => {
   const { ctx, playerID } = props;
   const players = [];
@@ -16,7 +17,8 @@ const Players = (props) => {
           <Player {...props} i={i} />
         </div>
       );
-    } else if (i !== 0 && i !== ctx.numPlayers - 1) {
+    } else if (i !== 0 && i !== ctx.numPlayers - 1) {   
+      // dashed line to indicate where you are in the turn order (i.e. between these two players). only applicable if you're not the first or last player
       players.push(
         <div key="position marker" className="d-flex align-items-center h-100">
           <div

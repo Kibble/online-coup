@@ -10,11 +10,13 @@ import {
 import "./Board.css";
 
 const Board = (props) => {
+  // player 0 has to set the player's actual screen names due to the way boardgame.io works
   useEffect(() => {
     if (props.playerID === "0") {
       props.moves.changeNames(props.gameMetadata);
     }
   }, [props.playerID, props.moves, props.gameMetadata]);
+  
   return (
     <div className="game-container">
       <Players {...props} />

@@ -31,19 +31,19 @@ const Room = (props) => {
   const [players, setPlayers] = useState([]);
   const [show, setShow] = useState(false);
 
-  // update players who join
+  // check for newly joined players by comparing against the two players array (front-end and the api, and api is always slightly ahead)
   useEffect(() => {
     const interval = setInterval(() => {
       api.getPlayers(id).then(
         (players) => {
           setPlayers(players);
-          const currPlayers = players.filter((player) => player.name);
+          const currPlayers = players.filter((player) => player.name);  // only current players have a name field
           if (currPlayers.length === players.length) {
-            setShow(true);
+            setShow(true);  // everyone has joined, show them the board
           }
-        },
+        },                                                              
         () => {
-          history.push("", { invalidRoom: true });
+          history.push("", { invalidRoom: true });  // failed to join because room doesn't exist -> return user to homepage
         }
       );
     }, 500);
@@ -55,7 +55,7 @@ const Room = (props) => {
     };
   }, [show, players.length, id, history]);
 
-  // copy to clipboard
+  // after user copies to clipboard
   useEffect(() => {
     let timeout;
     if (copied) {
@@ -91,6 +91,7 @@ const Room = (props) => {
   };
 
   if (show) {
+    // don't include lobby because game doesn't show game title, game credits... it's fullscreen.
     return (
       <CoupClient
         gameID={id}

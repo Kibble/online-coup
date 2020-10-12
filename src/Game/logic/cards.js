@@ -1,3 +1,4 @@
+// Create character cards
 export const Card = (character, front) => ({
   character,
   front,
