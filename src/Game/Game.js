@@ -113,6 +113,7 @@ const setHand = (G, ctx, cardID) => {
     returnToDeck(G, notUsed);
     ctx.events.endTurn();
   }
+};
 
 // Update turnLog as soon as player selects an action, and prepare as necessary (updating active players, setting up ambassador's drawn cards)
 const prepAction = (G, ctx, action) => {
@@ -560,6 +561,7 @@ const getNewHand = (hand) => {
   return newHand;
 };
 
+// returns the unused cards to the deck for completing an exchange
 const returnToDeck = (G, cards) => {
   cards.forEach((card) => {
     G.deck.push(card);
