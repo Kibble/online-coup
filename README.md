@@ -32,9 +32,7 @@ All images are from the original Coup board game by Indie Boards & Cards (releas
 
 ## Screenshots
 ![Homepage](screenshots/homepage.PNG)
-
 ![Room](screenshots/roompage.PNG)
-
 ![Game](screenshots/gamepage.PNG)
 
 <br>
