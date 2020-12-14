@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { Home, Room } from "./pages";
-import { cards } from "./Game/logic/cards";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";

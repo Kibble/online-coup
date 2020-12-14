@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import uniqid from "uniqid";
-import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import "./ChatLog.scss";
+
+const handleKeyUp = (e) => {
+  e.preventDefault();
+  if (e.keyCode === 13) {
+    // enter key: another way to send a message
+    document.getElementById("send-button").click();
+  }
+};
 
 const ChatLog = ({ G, ctx, playerID, moves }) => {
   const [msg, setMsg] = useState("");
@@ -14,30 +21,41 @@ const ChatLog = ({ G, ctx, playerID, moves }) => {
     setMsg("");
   };
 
-  useEffect(() => {   // when a new message appear, automatically scroll chat box (when applicable) to bottom to show it
+  useEffect(() => {
+    // when a new message appear, automatically scroll chat box (when applicable) to bottom to show it
     let objDiv = document.getElementById("scrollBottom");
     objDiv.scrollTop = objDiv.scrollHeight;
   }, [G.chat]);
 
-  const handleKeyUp = (e) => {
-    e.preventDefault();
-    if (e.keyCode === 13) {   // enter key: another way to send a message
-      document.getElementById("send-button").click();
-    }
-  };
-
   // bot message is just output of turn log's message
   return (
     <div className="chat-container">
-      <div className="chat-title">chat & turn log</div>
+      <div className="chat-title">chat & log</div>
       <div id="scrollBottom" className="msgs">
         {G.chat.map((msg) => {
-          return (
-            <div id="playerMsg" className={classNames("msg", { "bot-msg": msg.id === "-1" })} key={uniqid()}>
-              <span className="msg-sender">{msg.id === "-1" ? "" : G.players[msg.id].name + ": "}</span>
-              {msg.content}
-            </div>
-          );
+          let className = "msg ";
+          if (msg.id === "-1") {
+            let msgParts = msg.content.split("\n");
+            className += "bot-msg ";
+            return (
+              <div id="playerMsg" className={className} key={uniqid()}>
+                <span className={msg.successful ? "successful" : "unsuccessful"}>{msgParts[0]}</span>
+                {/* Add mapping and add line breaks, add margin left */}
+                <div className="addendums">
+                  {msgParts.slice(1, msgParts.length).map((msgPart) => (
+                    <div key={uniqid()}>{msgPart}</div>
+                  ))}
+                </div>
+              </div>
+            );
+          } else {
+            return (
+              <div id="playerMsg" className={className} key={uniqid()}>
+                <span className="msg-sender">{G.players[msg.id].name + ": "}</span>
+                {msg.content}
+              </div>
+            );
+          }
         })}
       </div>
       <div className="chat-form">

@@ -13,9 +13,7 @@ import "./Room.scss";
 const api = new LobbyAPI();
 
 const { origin, protocol, hostname } = window.location;
-const SERVER_URL = APP_PRODUCTION
-  ? origin
-  : `${protocol}//${hostname}:${DEFAULT_PORT}`;
+const SERVER_URL = APP_PRODUCTION ? origin : `${protocol}//${hostname}:${DEFAULT_PORT}`;
 
 const CoupClient = Client({
   game: Coup,
@@ -37,13 +35,13 @@ const Room = (props) => {
       api.getPlayers(id).then(
         (players) => {
           setPlayers(players);
-          const currPlayers = players.filter((player) => player.name);  // only current players have a name field
+          const currPlayers = players.filter((player) => player.name); // only current players have a name field
           if (currPlayers.length === players.length) {
-            setShow(true);  // everyone has joined, show them the board
+            setShow(true); // everyone has joined, show them the board
           }
-        },                                                              
+        },
         () => {
-          history.push("", { invalidRoom: true });  // failed to join because room doesn't exist -> return user to homepage
+          history.push("", { invalidRoom: true }); // failed to join because room doesn't exist -> return user to homepage
         }
       );
     }, 500);
@@ -79,15 +77,9 @@ const Room = (props) => {
   };
 
   const leaveRoom = () => {
-    api
-      .leaveRoom(
-        id,
-        localStorage.getItem("id"),
-        localStorage.getItem("credentials")
-      )
-      .then(() => {
-        history.push("/");
-      });
+    api.leaveRoom(id, localStorage.getItem("id"), localStorage.getItem("credentials")).then(() => {
+      history.push("/");
+    });
   };
 
   if (show) {
@@ -107,12 +99,7 @@ const Room = (props) => {
         <div className="players-list">
           {players.map((player) => {
             if (player.name) {
-              return (
-                player.name +
-                `${
-                  player.name === localStorage.getItem("name") ? " (You)" : ""
-                }\n`
-              );
+              return player.name + `${player.name === localStorage.getItem("name") ? " (You)" : ""}\n`;
             } else {
               return "...\n";
             }
@@ -132,8 +119,7 @@ const Room = (props) => {
           </div>
           <div>
             Game will begin once all
-            {players.length === 0 ? "" : ` ${players.length}`} players have
-            joined.
+            {players.length === 0 ? "" : ` ${players.length}`} players have joined.
           </div>
           <button className="leave-btn" onClick={leaveRoom}>
             leave
