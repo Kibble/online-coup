@@ -8,18 +8,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 const App = () => {
-  const history = useHistory();   // remember the history of user navigation
-
-  // TODO: image optimization... only have a primitive attempt 
-  for (let i = 0; i < cards.length; i++) {
-    const img = new Image();
-    img.src = cards[i].front;
-  }
+  const history = useHistory(); // remember the history of user navigation
 
   // defining the routing: (so far) homepage, lobby/room page. else redirect to home page for simplicity
   return (
     <Switch>
-      <Route exact path="/">      
+      <Route exact path="/">
         <Home history={history} />
       </Route>
       <Route exact path="/rooms/:id">

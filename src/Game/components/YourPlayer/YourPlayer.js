@@ -2,12 +2,7 @@ import React from "react";
 import uniqid from "uniqid";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSkullCrossbones,
-  faCrown,
-  faThumbsUp,
-  faThumbsDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSkullCrossbones, faCrown, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import "./YourPlayer.scss";
 
 const YourPlayer = ({ G, ctx, playerID, moves }) => {
@@ -16,10 +11,8 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
   const gameOver = G.winner.id !== "-1";
 
   let cardSelectable =
-    (G.turnLog.exchange.hasOwnProperty("newHand") &&
-      ctx.activePlayers[playerID] === "action") ||
-    (ctx.activePlayers[playerID] &&
-      ctx.activePlayers[playerID].includes("lose"));
+    (G.turnLog.exchange.hasOwnProperty("newHand") && ctx.activePlayers[playerID] === "action") ||
+    (ctx.activePlayers[playerID] && ctx.activePlayers[playerID].includes("lose"));
   let cardSelected = false;
   // for exchange
   if (ctx.activePlayers[playerID] === "revealCard") {
@@ -38,32 +31,22 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
   const setHand = (cardID) => {
     moves.setHand(cardID);
   };
- 
+
   const hand = [];
   player.hand.forEach((card, index) => {
     let cardClass = "";
     if (
       (cardSelected && G.turnLog.challenge.revealedCard.id === card.id) ||
-      (isYourTurn &&
-        G.turnLog.exchange.hasOwnProperty("newHand") &&
-        G.turnLog.exchange.newHand.includes(card.id))
+      (isYourTurn && G.turnLog.exchange.hasOwnProperty("newHand") && G.turnLog.exchange.newHand.includes(card.id))
     ) {
       cardClass = "card-selected";
     } else if (cardSelectable) {
       cardClass = "card-selectable";
     }
-    // image loading optimization for when you successfully reveal a card to a challenge
-    if (G.turnLog.challenge.hasOwnProperty("swapCard")) {
-      const img = new Image();
-      img.src = G.turnLog.challenge.swapCard.front;
-    }
 
     hand.push(
       card.discarded ? (
-        <div
-          key={uniqid()}
-          className="character-card character-card-discarded"
-        ></div>
+        <div key={uniqid()} className="character-card character-card-discarded"></div>
       ) : (
         <img
           key={player.id + card.character + index}
@@ -71,16 +54,9 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
           src={card.front}
           onClick={() => {
             // handle card selection logic
-            if (
-              ctx.activePlayers[playerID] &&
-              ctx.activePlayers[playerID].includes("lose") &&
-              !card.discarded
-            ) {
+            if (ctx.activePlayers[playerID] && ctx.activePlayers[playerID].includes("lose") && !card.discarded) {
               loseCard(playerID, card.id);
-            } else if (
-              G.turnLog.exchange.hasOwnProperty("newHand") &&
-              isYourTurn
-            ) {
+            } else if (G.turnLog.exchange.hasOwnProperty("newHand") && isYourTurn) {
               setHand(card.id);
             } else if (cardSelectable && !card.discarded) {
               revealCard(playerID, card.id);
@@ -105,7 +81,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
     animate = "your-player-inactive";
   }
 
-    // little icon to indicate your counterresponse
+  // little icon to indicate your counterresponse
   let iconColor = "";
   if (G.turnLog.responses[playerID] === "allow") {
     iconColor = "#008000";
@@ -144,10 +120,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
           </div>
         ) : (
           <div className="coin-row no-gutters">
-            <div
-              className="w-50 h-100 d-flex align-items-center justify-content-end"
-              style={{ paddingRight: "1%" }}
-            >
+            <div className="w-50 h-100 d-flex align-items-center justify-content-end" style={{ paddingRight: "1%" }}>
               <img
                 draggable={false}
                 className="img-fluid"
@@ -161,10 +134,7 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
               style={{ paddingLeft: "1.2%", fontSize: "2.8vw" }}
             >
               {player.coins}
-              <div
-                className="response-icon"
-                style={{ paddingRight: "1vw", color: `${iconColor}` }}
-              >
+              <div className="response-icon" style={{ paddingRight: "1vw", color: `${iconColor}` }}>
                 {G.turnLog.responses[playerID] !== "" ? (
                   G.turnLog.responses[playerID] === "allow" ? (
                     <FontAwesomeIcon icon={faThumbsUp} />

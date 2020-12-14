@@ -11,23 +11,6 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
   const isYourTurn = playerID === ctx.currentPlayer;
   const [choices, setChoices] = useState([]);
 
-  // image loading optimization: prepare to reveal top 2 cards from deck right after player chooses to exchange
-  if (G.turnLog.action === "exchange" && G.turnLog.successful && isYourTurn) {
-    cards.forEach((card) => {
-      const img = new Image();
-      img.src = card.front;
-    });
-  }
-
-  // image loading optimization: prepare to reveal character options (captain, ambassador) right after player chooses to steal
-  let stealBlocks = [cards[3], cards[2]];
-  if (G.turnLog.action === "steal" && playerID === G.turnLog.target.id) {
-    stealBlocks.forEach((card) => {
-      const img = new Image();
-      img.src = card.front;
-    });
-  }
-
   useEffect(() => {
     const coup = (character) => {
       moves.coup(character);
@@ -54,16 +37,11 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
     };
 
     const leaveRoom = () => {
-      api
-        .leaveRoom(
-          gameID,
-          localStorage.getItem("id"),
-          localStorage.getItem("credentials")
-        )
-        .then(() => {   // leaving clears your localStorage to "reset" your identity and then takes you to homepage
-          localStorage.clear();
-          window.location.href = "/";
-        });
+      api.leaveRoom(gameID, localStorage.getItem("id"), localStorage.getItem("credentials")).then(() => {
+        // leaving clears your localStorage to "reset" your identity and then takes you to homepage
+        localStorage.clear();
+        window.location.href = "/";
+      });
     };
 
     let temp = [];
@@ -126,8 +104,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       // image loading optimization with hidden
       G.turnLog.exchange.drawnCards.forEach((card) => {
         const cardSelected =
-          G.turnLog.exchange.hasOwnProperty("newHand") &&
-          G.turnLog.exchange.newHand.includes(card.id);
+          G.turnLog.exchange.hasOwnProperty("newHand") && G.turnLog.exchange.newHand.includes(card.id);
         temp.push(
           <img
             key={"choice" + card.character}
@@ -139,18 +116,13 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
             }}
             src={card.front}
             alt={card.character}
-            hidden={
-              !G.turnLog.successful || ctx.activePlayers[playerID] !== "action"
-            }
+            hidden={!G.turnLog.successful || ctx.activePlayers[playerID] !== "action"}
           />
         );
       });
     }
     // show possible player responses
-    else if (
-      !G.players[playerID].isOut &&
-      G.turnLog.responses[playerID] === ""
-    ) {
+    else if (!G.players[playerID].isOut && G.turnLog.responses[playerID] === "") {
       if (ctx.activePlayers[playerID] === "block") {
         temp.push(
           <button key={uniqid()} className="choice-btn" onClick={allow}>
@@ -192,17 +164,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       }
     }
     setChoices(temp);
-  }, [
-    G.turnLog,
-    G.players,
-    ctx.currentPlayer,
-    ctx.activePlayers,
-    playerID,
-    moves,
-    isYourTurn,
-    G.winner.id,
-    gameID,
-  ]);
+  }, [G.turnLog, G.players, ctx.currentPlayer, ctx.activePlayers, playerID, moves, isYourTurn, G.winner.id, gameID]);
 
   return <div className="choosing-panel">{choices}</div>;
 };

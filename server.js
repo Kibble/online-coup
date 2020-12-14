@@ -6,7 +6,7 @@ import serve from "koa-static";
 import { DEFAULT_PORT } from "./src/config";
 
 const server = Server({ games: [Coup] });
-const PORT = process.env.PORT || DEFAULT_PORT;    // run on single port that handles API requests and serves the pages (running on free dyno)
+const PORT = process.env.PORT || DEFAULT_PORT;
 
 // build path relative to the server.js file
 const frontEndAppBuildPath = path.resolve(__dirname, "./build");
