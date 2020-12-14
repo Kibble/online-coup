@@ -24,8 +24,16 @@ This game can be played online with 2-8 players. <br>
 
 ## Credits
 
-All assets come from the original Coup board game by Indie Boards & Cards (released 2012). <br><br>
+In-game icons are from Font Awesome at https://fontawesome.com/ <br>
+All images are from the original Coup board game by Indie Boards & Cards (released 2012). <br><br>
 **Link to designer, artist, and publisher credits at BoardGameGeek**: https://boardgamegeek.com/boardgame/131357/coup
+
+<br>
+
+## Screenshots
+![Homepage](screenshots/homepage.PNG)
+![Room](screenshots/roompage.PNG)
+![Game](screenshots/gamepage.PNG)
 
 <br>
 
