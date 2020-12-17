@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  Players,
-  YourPlayer,
-  Actions,
-  AnnouncementArea,
-  ChatLog,
-} from "./components";
+import { Players, YourPlayer, BottomBar, AnnouncementArea, ChatLogSettings } from "./components";
 import "./Board.css";
 
 const Board = (props) => {
@@ -16,7 +10,7 @@ const Board = (props) => {
       props.moves.changeNames(props.gameMetadata);
     }
   }, [props.playerID, props.moves, props.gameMetadata]);
-  
+
   return (
     <div className="game-container">
       <Players {...props} />
@@ -26,10 +20,10 @@ const Board = (props) => {
         </div>
         <div className="messages-actions-container">
           <AnnouncementArea {...props} />
-          <Actions {...props} />
+          <BottomBar {...props} />
         </div>
-        <div className="chat-col">
-          <ChatLog {...props} />
+        <div className="cls-col">
+          <ChatLogSettings {...props} />
         </div>
       </div>
     </div>

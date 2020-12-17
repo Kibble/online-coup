@@ -1,0 +1,44 @@
+@import "../../../styles.scss";
+
+.cls-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 100%;
+  width: 26.2vw;
+  background: #f6f6f6;
+  border: 0.225vw solid #555555;
+  border-radius: calc(0.1vw + 0.1vh);
+}
+
+.cls-header {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  padding: 0.5vh 0;
+  background: #9fb6cd;
+  border-bottom: 0.2vw solid #555555;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2.4vw;
+  font-weight: 700;
+  @extend .unselectable;
+}
+
+.option {
+  cursor: pointer;
+  position: absolute;
+  &:hover {
+    color: #525c65;
+  }
+}
+
+.right-option {
+  right: 2vw;
+  @extend .option;
+}
+
+.left-option {
+  left: 2vw;
+  @extend .option;
+}

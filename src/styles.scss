@@ -1,0 +1,14 @@
+.unselectable {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.no-outline {
+  &:focus,
+  &:active,
+  &:focus:active {
+    outline: none;
+  }
+}

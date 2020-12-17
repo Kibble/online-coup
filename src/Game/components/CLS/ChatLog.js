@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import uniqid from "uniqid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+
 import "./ChatLog.scss";
 
 const handleKeyUp = (e) => {
@@ -12,7 +13,7 @@ const handleKeyUp = (e) => {
   }
 };
 
-const ChatLog = ({ G, ctx, playerID, moves }) => {
+const ChatLog = ({ G, playerID, moves }) => {
   const [msg, setMsg] = useState("");
 
   const message = (content) => {
@@ -27,10 +28,8 @@ const ChatLog = ({ G, ctx, playerID, moves }) => {
     objDiv.scrollTop = objDiv.scrollHeight;
   }, [G.chat]);
 
-  // bot message is just output of turn log's message
   return (
-    <div className="chat-container">
-      <div className="chat-title">chat & log</div>
+    <>
       <div id="scrollBottom" className="msgs">
         {G.chat.map((msg) => {
           let className = "msg ";
@@ -40,7 +39,6 @@ const ChatLog = ({ G, ctx, playerID, moves }) => {
             return (
               <div id="playerMsg" className={className} key={uniqid()}>
                 <span className={msg.successful ? "successful" : "unsuccessful"}>{msgParts[0]}</span>
-                {/* Add mapping and add line breaks, add margin left */}
                 <div className="addendums">
                   {msgParts.slice(1, msgParts.length).map((msgPart) => (
                     <div key={uniqid()}>{msgPart}</div>
@@ -72,7 +70,7 @@ const ChatLog = ({ G, ctx, playerID, moves }) => {
           <FontAwesomeIcon icon={faPaperPlane} />
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
