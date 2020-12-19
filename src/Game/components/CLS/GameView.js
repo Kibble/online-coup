@@ -60,7 +60,11 @@ const GameView = ({ G, playerID, revealDeck, setRevealDeck }) => {
         </span>
       </div>
       <div className="deckview-container">
-        {player.isOut || G.winner.id !== "-1" ? deckView : `Deck: ${G.deck.length} cards`}
+        {player.isOut || G.winner.id !== "-1" ? (
+          deckView
+        ) : (
+          <span className="deck-info">{`Deck: ${G.deck.length} cards`}</span>
+        )}
       </div>
     </div>
   );

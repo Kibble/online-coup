@@ -10,7 +10,7 @@ import "./CLS.scss";
 const allOptions = ["chat & log", "game view", "rules"];
 
 const ChatLogSettings = ({ G, ctx, playerID, moves, revealDeck, setRevealDeck }) => {
-  const [optionIndex, setIndex] = useState(1);
+  const [optionIndex, setIndex] = useState(0);
   const [rulesPage, setRPage] = useState(1);
 
   const left = () => {

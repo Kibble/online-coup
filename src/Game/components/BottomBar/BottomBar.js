@@ -5,7 +5,7 @@ import Actions from "./Actions";
 import "./BottomBar.scss";
 
 const BottomBar = ({ G, ctx, playerID, moves, revealDeck }) =>
-  G.winner.id === "-1" || G.players[playerID].isOut ? (
+  G.winner.id !== "-1" || G.players[playerID].isOut ? (
     revealDeck ? (
       <Deck deck={G.deck} />
     ) : (
