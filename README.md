@@ -1,39 +1,33 @@
 # Online Coup
 
-A clone of Coup built using React.js and boardgame.io featuring a lobby, turn log, and in-game chat. <br><br>
 **Link to play:** https://online-coup.herokuapp.com/
 
 ## About
 
-Coup is a popular strategy board game based around deception. Be the last one standing to win! <br>
-This game can be played online with 2-8 players. <br>
+This version of Coup can be played online with 2-8 players and features a lobby, player chat, turn log, and action statistics. <br>
 
 **Link to the official rules:** https://www.ultraboardgames.com/coup/game-rules.php <br>
 
-### Rule Modifications/Clarification
+### Rule Modifications & Game Clarification
 
-- With 6 or less players, the deck will have 15 total cards (3 of each character). With 7 or 8 players, the deck will have 20 total cards (4 of each character). <br>
-- The first player is decided randomly. Turns pass in a clockwise fashion. If you are not first or last, a dashed line will clarify your turn order.
-- A coup involves an additional character selection and will be unsuccessful if the targeted player does not possess the targeted character.
-- It is possible to steal from a player with zero coins, though stealing in this case will produce no net gain or loss of coins from either side if successful.
+- With 7 or 8 players, the deck will have 20 total cards (4 of each character). <br>
+- If you do no go first or last, a dashed line will clarify your turn order. Turns pass in a clockwise fashion, and the first player is decided randomly.
+- A coup involves a character guess and will be unsuccessful if the guess is incorrect (i.e. the targeted player does not possess that character).
+- Stealing from a player with 0 coins produces no net gain or loss of coins from either side if successful.
+
+**Refer to the in-game rules panel for additional clarification.
 
 ### Notes
 - Online Coup is currently in beta testing. It may take time to load some images, and bugs may occur while playing.
-- When using a mobile device, play in landscape mode for the best experience.
+- When using a mobile device (not recommended), play in landscape mode for the best experience.
 - ***Please use the LEAVE button to exit a room or a game.***
 
 ## Credits
 
 In-game icons are from Font Awesome at https://fontawesome.com/ <br>
-All images are from the original Coup board game by Indie Boards & Cards (released 2012). <br><br>
-**Link to designer, artist, and publisher credits at BoardGameGeek**: https://boardgamegeek.com/boardgame/131357/coup
-
+All images are from the original Coup board game by Indie Boards & Cards (released 2012). <br>
 <br>
-
-## Screenshots
-![Homepage](screenshots/homepage.PNG)
-![Room](screenshots/roompage.PNG)
-![Game](screenshots/gamepage.PNG)
+**Link to designer, artist, and publisher credits at BoardGameGeek**: https://boardgamegeek.com/boardgame/131357/coup
 
 <br>
 
