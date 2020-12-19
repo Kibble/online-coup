@@ -49,6 +49,10 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
         <div key={uniqid()} className="character-card character-card-discarded"></div>
       ) : (
         <img
+          onDragStart={(e) => {
+            e.preventDefault();
+          }}
+          draggable={false}
           key={player.id + card.character + index}
           className={`character-card ${cardClass}`}
           src={card.front}
@@ -122,6 +126,9 @@ const YourPlayer = ({ G, ctx, playerID, moves }) => {
           <div className="coin-row no-gutters">
             <div className="w-50 h-100 d-flex align-items-center justify-content-end" style={{ paddingRight: "1%" }}>
               <img
+                onDragStart={(e) => {
+                  e.preventDefault();
+                }}
                 draggable={false}
                 className="img-fluid"
                 src="/images/coin.png"

@@ -38,7 +38,7 @@ const ChatLog = ({ G, playerID, moves }) => {
             className += "bot-msg ";
             return (
               <div id="playerMsg" className={className} key={uniqid()}>
-                <span className={msg.successful ? "successful" : "unsuccessful"}>{msgParts[0]}</span>
+                <span className={msg.successful ? "successful-color" : "unsuccessful-color"}>{msgParts[0]}</span>
                 <div className="addendums">
                   {msgParts.slice(1, msgParts.length).map((msgPart) => (
                     <div key={uniqid()}>{msgPart}</div>

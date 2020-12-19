@@ -1,5 +1,3 @@
-@import "../../../styles.scss";
-
 .rules-intro-container {
   padding: 1vh 0 1.5vh 0;
   font-size: 1.5vw;
@@ -25,7 +23,7 @@
 
 .rules-title {
   font-size: 1.75vw;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .rules-table {
@@ -35,7 +33,7 @@
     width: 50%;
     background-color: #e0dfdb;
     font-size: 1.25vw;
-    font-weight: 500;
+    font-weight: 400;
   }
   td {
     font-size: 1.15vw;
@@ -73,28 +71,4 @@
   bottom: 1vh;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.page-btn {
-  cursor: pointer;
-  width: 5vh;
-  height: 5vh;
-  border: 0.135vw solid #555555;
-  font-size: 2.5vh;
-  @extend .no-outline;
-  @extend .unselectable;
-}
-
-.page-unselected {
-  background: #ececec;
-  &:hover {
-    background: #b0c4de;
-  }
-}
-
-.page-selected {
-  background: #b0c4de;
-  &:hover {
-    background: #a2b5cd;
-  }
 }

@@ -1,0 +1,82 @@
+@import "../../../styles.scss";
+
+.gameview-container {
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  height: 100%;
+}
+
+.gameview-table {
+  width: 95%;
+  margin: 1.25vh auto 0.5vh auto;
+  tr {
+    td:nth-child(2) {
+      @extend .successful-color;
+    }
+    td:nth-child(3) {
+      @extend .unsuccessful-color;
+    }
+    td:nth-child(4),
+    td:nth-child(5) {
+      @extend .counteraction-color;
+    }
+  }
+  th {
+    width: 12.5%;
+    background-color: #e0dfdb;
+    font-size: 1.25vw;
+    font-weight: 700;
+  }
+  th:first-of-type {
+    width: 50%;
+    font-weight: 400;
+  }
+  td {
+    font-size: 1.15vw;
+  }
+  th,
+  td {
+    padding: 0.2vh 0;
+    border: 0.175vw solid var(--text-color);
+  }
+}
+
+.stat-desc {
+  font-size: 1vw;
+  line-height: 1.25;
+}
+
+.stat-legend {
+  padding-top: 0.5vh;
+  font-size: 1.1vw;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.deckview-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  border-top: 0.25vh solid;
+  margin: 1.5vh auto 0 auto;
+  font-size: 1.15vw;
+  line-height: 1.25;
+
+  button {
+    cursor: pointer;
+    width: 50%;
+    border: 0.135vw solid #555555;
+    padding: 0.25vw 0;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  div {
+    font-style: italic;
+  }
+}

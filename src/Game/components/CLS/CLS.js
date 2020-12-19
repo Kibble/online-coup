@@ -7,10 +7,10 @@ import Rules from "./Rules";
 
 import "./CLS.scss";
 
-const allOptions = ["chat & log", "rules"];
+const allOptions = ["chat & log", "game view", "rules"];
 
-const ChatLogSettings = ({ G, ctx, playerID, moves }) => {
-  const [optionIndex, setIndex] = useState(0);
+const ChatLogSettings = ({ G, ctx, playerID, moves, revealDeck, setRevealDeck }) => {
+  const [optionIndex, setIndex] = useState(1);
   const [rulesPage, setRPage] = useState(1);
 
   const left = () => {
@@ -35,7 +35,7 @@ const ChatLogSettings = ({ G, ctx, playerID, moves }) => {
     if (selection === "chat & log") {
       return <ChatLog G={G} playerID={playerID} moves={moves} />;
     } else if (selection === "game view") {
-      return <GameView G={G} ctx={ctx} playerID={playerID} />;
+      return <GameView G={G} playerID={playerID} revealDeck={revealDeck} setRevealDeck={setRevealDeck} />;
     } else if (selection === "rules") {
       return <Rules page={rulesPage} setPage={setRPage} />;
     }

@@ -156,7 +156,7 @@ const Rules = ({ page, setPage }) => {
           <button
             key={uniqid()}
             onClick={() => select(pageNum)}
-            className={`page-btn ${page === pageNum ? "page-selected" : "page-unselected"}`}
+            className={`page-btn ${page === pageNum ? "btn-selected" : "btn-unselected"}`}
           >
             {pageNum}
           </button>

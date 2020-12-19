@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import uniqid from "uniqid";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,6 +6,8 @@ import { faSkullCrossbones, faCrown, faThumbsUp, faThumbsDown } from "@fortaweso
 import "./Player.scss";
 
 const Player = ({ G, ctx, playerID, moves, i }) => {
+  const [revealHand, setRevealHand] = useState(false);
+  const yourPlayer = G.players[playerID];
   const player = G.players[i];
   const gameOver = G.winner.id !== "-1";
 
@@ -20,12 +22,16 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
         <div key={uniqid()} className="character-card character-card-discarded"></div>
       ) : (
         <img
+          onDragStart={(e) => {
+            e.preventDefault();
+          }}
+          draggable={false}
           key={player.name + cardIndex}
           className={classNames("character-card", {
             "character-card-reveal": revealCard,
           })}
-          src={gameOver || revealCard ? card.front : "/images/back.PNG"} // on game over, reveal the winner's cards to everyone
-          alt={gameOver || revealCard ? card.character : "card"}
+          src={gameOver || revealCard || revealHand ? card.front : "/images/back.PNG"} // on game over, reveal the winner's cards to everyone
+          alt={gameOver || revealCard || revealHand ? card.character : "card"}
         />
       )
     );
@@ -39,7 +45,12 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     isYourTurn &&
     Object.keys(G.turnLog.target).length === 0 &&
     !player.isOut;
+  const canRevealHand = yourPlayer.isOut && !player.isOut && !gameOver;
   const targeted = i === parseInt(G.turnLog.target.id);
+
+  const updateReveal = () => {
+    setRevealHand(!revealHand);
+  };
 
   // for coup, player must select another player as the target
   const setTarget = () => {
@@ -66,6 +77,10 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     }
   }
 
+  if (canRevealHand) {
+    animate += " player-select-reveal";
+  }
+
   // little icon to indicate a player's counterresponse
   let iconColor = "";
   if (G.turnLog.responses[i] === "allow") {
@@ -77,7 +92,12 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
   }
 
   return (
-    <div className={`player ${animate}`} onClick={setTarget}>
+    <div
+      className={`player ${animate}`}
+      onClick={() => {
+        canRevealHand ? updateReveal() : setTarget();
+      }}
+    >
       <div className="player-body">
         <div className="player-name">{player.name}</div>
         <div className="no-gutters d-flex" style={{ height: "60%" }}>
@@ -102,7 +122,15 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
         ) : (
           <div className="coin-row no-gutters">
             <div className="w-50 h-100 d-flex justify-content-end" style={{ paddingRight: "1%" }}>
-              <img draggable={false} className="img-fluid h-100" src="/images/coin.png" alt="coins" />
+              <img
+                onDragStart={(e) => {
+                  e.preventDefault();
+                }}
+                draggable={false}
+                className="img-fluid h-100"
+                src="/images/coin.png"
+                alt="coins"
+              />
             </div>
             <div className="w-50 d-flex align-items-center" style={{ paddingLeft: "1%" }}>
               {player.coins}

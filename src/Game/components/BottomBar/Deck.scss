@@ -1,0 +1,26 @@
+@import "../../../styles.scss";
+
+.deck-container {
+  height: 13.75vh;
+  margin: 0 0.75vw;
+  display: flex;
+  text-align: center;
+  @extend .unselectable;
+}
+
+.deck-cards-container {
+  padding-left: 0.75vw;
+}
+
+.deck-title {
+  text-transform: uppercase;
+  text-decoration: underline;
+  font-size: 2vw;
+  font-weight: 400;
+}
+
+.character-card-small {
+  width: 4.12vw;
+  border: 0.08vw solid var(--card-border-color);
+  border-radius: 8%;
+}

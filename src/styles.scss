@@ -12,3 +12,37 @@
     outline: none;
   }
 }
+
+.successful-color {
+  color: #4f7942;
+}
+
+.unsuccessful-color {
+  color: #8b3e2f;
+}
+
+.counteraction-color {
+  color: #507786;
+}
+
+.page-btn {
+  cursor: pointer;
+  width: 5vh;
+  height: 5vh;
+  border: 0.135vw solid #555555;
+  font-size: 2.5vh;
+}
+
+.btn-unselected {
+  background: #ececec;
+  &:hover {
+    background: #b0c4de;
+  }
+}
+
+.btn-selected {
+  background: #b0c4de;
+  &:hover {
+    background: #a2b5cd;
+  }
+}

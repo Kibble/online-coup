@@ -12,6 +12,32 @@ const logTurn = (turnLog, action, player, successful, target, blockedBy, challen
   turnLog.exchange = exchange;
 };
 
+// update statistics
+const logStats = (turnLog, statistics) => {
+  // find index
+  let i = 0;
+  while (i < statistics.length && statistics[i][0] !== turnLog.action) {
+    i++;
+  }
+  let row = statistics[i];
+  if (turnLog.successful) {
+    row[1]++;
+  } else {
+    row[2]++;
+  }
+  if (turnLog.blockedBy && Object.keys(turnLog.blockedBy).length !== 0) {
+    row[3]++;
+  }
+  if (
+    turnLog.challenge &&
+    Object.keys(turnLog.challenge).length !== 0 &&
+    turnLog.player.id === turnLog.challenge.challenged.id
+  ) {
+    // only for direct challenges to the player's action, not to a character counteraction (e.g. block)
+    row[4]++;
+  }
+};
+
 // reset responses, which consist of actions and counteractions, where index represents playerID
 const resetResponses = (numPlayers) => {
   const responses = [];
@@ -49,4 +75,4 @@ const returnToDeck = (G, cards) => {
   shuffleDeck(G.deck);
 };
 
-export { logTurn, resetResponses, updateIsOut, getNumAlivePlayers, checkForWinner, returnToDeck };
+export { logTurn, logStats, resetResponses, updateIsOut, getNumAlivePlayers, checkForWinner, returnToDeck };

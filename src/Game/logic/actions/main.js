@@ -158,7 +158,7 @@ const initiateChallenge = (G, ctx, playerID) => {
   });
 };
 
-/* Helper functions */
+/* ---- Helper functions ---- */
 
 // returns what characters can challenge the current action
 const getChallengeCharacters = (G, isBlocked) => {

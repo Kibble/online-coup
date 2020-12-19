@@ -58,9 +58,6 @@
   height: 4.8vh;
   resize: none;
   color: var(--text-color);
-  &::selection {
-    background: #cccccc;
-  }
   &:focus,
   &:active,
   &:focus:active {

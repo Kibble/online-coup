@@ -1,4 +1,4 @@
-import { logTurn, resetResponses, checkForWinner } from "./logic/actions/helper";
+import { logTurn, logStats, resetResponses, checkForWinner } from "./logic/actions/helper";
 import {
   prepAction,
   setTarget,
@@ -32,6 +32,15 @@ const setup = ({ numPlayers }) => {
       responses: resetResponses(numPlayers),
       exchange: {},
     },
+    statistics: [
+      ["income", 0, "—", "—", "—"],
+      ["foreign aid", 0, 0, 0, "—"],
+      ["coup", 0, 0, "—", "—"],
+      ["tax", 0, 0, "—", 0],
+      ["assassinate", 0, 0, 0, 0],
+      ["steal", 0, 0, 0, 0],
+      ["exchange", 0, 0, "—", 0],
+    ],
     chat: [],
   };
 };
@@ -47,6 +56,7 @@ export const Coup = {
       ctx.events.setActivePlayers({ currentPlayer: "action", others: "idle" });
     },
     onEnd: (G, ctx) => {
+      logStats(G.turnLog, G.statistics);
       G.chat.push({ id: "-1", content: getTurnMsg(G.turnLog), successful: G.turnLog.successful });
       checkForWinner(G);
     },

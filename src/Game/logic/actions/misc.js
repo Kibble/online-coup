@@ -12,7 +12,7 @@ const changeNames = (G, ctx, playerList) => {
   }
 };
 
-/*----------------- TODO: early leave -----------------*/
+/*---- TODO: early leave ---- */
 const endTurn = (G, ctx) => {
   ctx.events.endTurn();
 };

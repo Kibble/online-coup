@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .your-player {
   height: calc(1.17 * var(--your-player-width));
   max-height: 88%;
@@ -9,6 +11,8 @@
   border-radius: calc(0.6vh + 0.6vw);
 
   font-size: 2.4vw;
+
+  @extend .unselectable;
 }
 
 .your-player-enter {

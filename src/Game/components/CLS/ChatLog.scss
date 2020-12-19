@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .msgs {
   overflow-y: scroll;
   height: 47vh;
@@ -23,17 +25,8 @@
 }
 
 .bot-msg {
-  font-weight: 400;
-  color: #507786;
   background: #e3e3e3;
-}
-
-.successful {
-  color: #4f7942;
-}
-
-.unsuccessful {
-  color: #8b3e2f;
+  @extend .counteraction-color;
 }
 
 .addendums {
@@ -66,6 +59,7 @@
     background: #cccccc;
   }
   &::placeholder {
+    opacity: 1;
     color: #888888;
   }
 }

@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .character-card {
   height: 100%;
   width: 50%;
@@ -27,6 +29,7 @@
 
   font-size: 1.5vw;
 
+  @extend .unselectable;
   @extend .player-effect;
 }
 
@@ -46,6 +49,23 @@
     border-radius: inherit;
     transform: translate3d(0, calc(3 * var(--player-step)), -1rem);
     transition: transform 100ms cubic-bezier(0, 0, 0.58, 1), box-shadow 100ms cubic-bezier(0, 0, 0.58, 1);
+  }
+}
+
+.player-select-reveal {
+  cursor: pointer;
+  @media (hover: hover) {
+    &:hover {
+      background: var(--enabled-color);
+    }
+  }
+  &:active {
+    background: var(--enabled-color);
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    outline: none;
   }
 }
 
