@@ -24,8 +24,9 @@ This version of Coup can be played online with 2-8 players and features a lobby,
 
 ## Credits
 
-In-game icons are from Font Awesome at https://fontawesome.com/ <br>
-All images are from the original Coup board game by Indie Boards & Cards (released 2012). <br>
+Online Coup was developed using [React](https://reactjs.org/) and [boardgame.io](https://boardgame.io/). <br>
+Icons come from [Font Awesome](https://fontawesome.com/). <br>
+Images come from the original Coup board game by Indie Boards & Cards (released 2012). <br>
 <br>
 **Link to designer, artist, and publisher credits at BoardGameGeek**: https://boardgamegeek.com/boardgame/131357/coup
 
@@ -33,6 +34,7 @@ All images are from the original Coup board game by Indie Boards & Cards (releas
 
 ## Development
 
-- Run `npm install` to install the packages.
-- Run `npm start` to run the client.
-- Run `npm run serve` to run the server.
+1. Fork the repository.
+2. Run `npm install` to install the packages.
+3. Run `npm start` to run the client.
+4. In a separate terminal, run `npm run serve` to run the server.
