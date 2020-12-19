@@ -168,7 +168,8 @@ const loseCardAndShuffle = (G, ctx, playerID, cardID) => {
   } else if (
     // Player attempts to exchange, gets challenged, and reveals ambassador successfully.
     G.turnLog.action === "exchange" &&
-    Object.keys(G.turnLog.challenge) !== 0
+    Object.keys(G.turnLog.challenge) !== 0 &&
+    !G.turnLog.challenge.successful
   ) {
     // redraw with the new deck (after returning ambassador to the deck)
     // no possibility of array out of bounds because the game starts out with at least 2 cards in deck
