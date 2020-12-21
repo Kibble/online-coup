@@ -9,7 +9,7 @@ import {
 } from "./logic/actions/intermediary";
 import { income, coup, executeAction, allow, block, initiateChallenge } from "./logic/actions/main";
 import { message, changeNames, endTurn } from "./logic/actions/misc";
-import { initializeGame } from "./logic/initializer";
+import { initializeGame, getPlayOrder } from "./logic/initializer";
 import { getTurnMsg } from "./logic/messageBuilder";
 import { GAME_NAME } from "../config";
 
@@ -61,16 +61,18 @@ export const Coup = {
       checkForWinner(G);
     },
     order: {
-      first: (G, ctx) => Math.floor(Math.random() * ctx.numPlayers), // first player is randomly chosen
+      first: (G, ctx) => 0,
       // find the next player who has cards (skip over players who are out)
-      next: ({ players }, { numPlayers, playOrderPos }) => {
+      next: ({ players }, { numPlayers, playOrder, playOrderPos }) => {
         for (let i = 1; i <= numPlayers; i++) {
-          let nextPlayer = (playOrderPos + i) % numPlayers;
+          const nextIndex = (playOrderPos + i) % numPlayers;
+          const nextPlayer = playOrder[nextIndex];
           if (!players[nextPlayer].isOut) {
-            return nextPlayer;
+            return nextIndex;
           }
         }
       },
+      playOrder: (G, { numPlayers }) => getPlayOrder(numPlayers),
     },
 
     stages: {

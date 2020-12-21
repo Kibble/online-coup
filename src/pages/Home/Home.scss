@@ -64,6 +64,7 @@ $track-radius: 0.5vh;
   -webkit-appearance: none;
   margin: $thumb-height / 2.5 0;
   width: $track-width;
+  background: inherit;
 
   &:focus {
     outline: 0;
@@ -90,6 +91,7 @@ $track-radius: 0.5vh;
 
   &::-moz-range-track {
     @include track;
+    outline: none;
     background: $track-color;
     border: $track-border-width solid $track-border-color;
     border-radius: $track-radius;

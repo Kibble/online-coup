@@ -1,4 +1,4 @@
-import { shuffleDeck } from "../initializer";
+import { shuffle } from "../initializer";
 
 // update turnLog in one line
 const logTurn = (turnLog, action, player, successful, target, blockedBy, challenge, responses, exchange) => {
@@ -72,7 +72,7 @@ const returnToDeck = (G, cards) => {
   cards.forEach((card) => {
     G.deck.push(card);
   });
-  shuffleDeck(G.deck);
+  shuffle(G.deck);
 };
 
 export { logTurn, logStats, resetResponses, updateIsOut, getNumAlivePlayers, checkForWinner, returnToDeck };
