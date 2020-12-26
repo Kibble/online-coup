@@ -8,10 +8,33 @@ import { LobbyAPI } from "../../../LobbyAPI";
 const api = new LobbyAPI();
 
 const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
-  const isYourTurn = playerID === ctx.currentPlayer;
   const [choices, setChoices] = useState([]);
 
   useEffect(() => {
+    if (G.gameOver.newRoomID !== "") {
+      const myID = localStorage.getItem("id");
+      const myCredentials = localStorage.getItem("credentials");
+      const myName = localStorage.getItem("name");
+      api.leaveRoom(gameID, myID, myCredentials).then(() => {
+        api.joinRoom(G.gameOver.newRoomID, myID, myName).then((credentials) => {
+          localStorage.setItem("credentials", credentials);
+          window.location.href = "/rooms/" + G.gameOver.newRoomID;
+        });
+      });
+    }
+  }, [G.gameOver.newRoomID, gameID]);
+
+  useEffect(() => {
+    if (G.gameOver.playAgain.length === ctx.numPlayers) {
+      if (G.gameOver.newRoomID === "" && playerID === G.gameOver.playAgain[0]) {
+        api.createRoom(ctx.numPlayers).then((roomID) => {
+          moves.setNewRoom(roomID);
+        });
+      }
+    }
+
+    const isYourTurn = playerID === ctx.currentPlayer;
+
     const coup = (character) => {
       moves.coup(character);
     };
@@ -37,6 +60,7 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
     };
 
     const leaveRoom = () => {
+      moves.leave(playerID);
       api.leaveRoom(gameID, localStorage.getItem("id"), localStorage.getItem("credentials")).then(() => {
         // leaving clears your localStorage to "reset" your identity and then takes you to homepage
         localStorage.clear();
@@ -44,13 +68,27 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       });
     };
 
+    const playAgain = () => {
+      moves.playAgain(playerID);
+    };
+
     let temp = [];
 
     // TODO: let players leave anytime (AKA they are "out" to the other players to skip over leaving player's turn)
     // game has ended: let players leave.
     if (G.winner.id !== "-1") {
+      document.getElementById("choosing_panel").style.flexDirection = "column";
+      document.getElementById("choosing_panel").style.alignItems = "center";
+      document.getElementById("choosing_panel").style.justifyContent = "flex-start";
+      const playAgainCounter =
+        G.gameOver.left.length !== 0 ? "N/A" : `${G.gameOver.playAgain.length}/${ctx.numPlayers}`;
       temp.push(
-        <button key={uniqid()} className="leave-btn-big" onClick={leaveRoom}>
+        <button key={uniqid()} className="play-again-btn" onClick={playAgain} disabled={G.gameOver.left.length !== 0}>
+          play again [{playAgainCounter}]
+        </button>
+      );
+      temp.push(
+        <button key={uniqid()} className="leave-btn" onClick={leaveRoom}>
           leave
         </button>
       );
@@ -164,9 +202,20 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       }
     }
     setChoices(temp);
-  }, [G.turnLog, G.players, ctx.currentPlayer, ctx.activePlayers, playerID, moves, isYourTurn, G.winner.id, gameID]);
+  }, [
+    G.turnLog,
+    G.players,
+    G.gameOver,
+    ctx.currentPlayer,
+    ctx.numPlayers,
+    ctx.activePlayers,
+    playerID,
+    moves,
+    G.winner.id,
+    gameID,
+  ]);
 
-  return <div className="choosing-panel">{choices}</div>;
+  return <div id="choosing_panel">{choices}</div>;
 };
 
 export default ChoosingPanel;

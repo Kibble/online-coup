@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import uniqid from "uniqid";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSkullCrossbones, faCrown, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSkullCrossbones,
+  faCrown,
+  faThumbsUp,
+  faThumbsDown,
+  faDoorClosed,
+  faDoorOpen,
+} from "@fortawesome/free-solid-svg-icons";
 import "./Player.scss";
 
 const Player = ({ G, ctx, playerID, moves, i }) => {
@@ -91,6 +98,24 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
     iconColor = "#42526C";
   }
 
+  const getBottomRow = (status, icon) => (
+    <>
+      {icon}&nbsp;({status})&nbsp;{icon}
+    </>
+  );
+
+  const bottomRow = () => {
+    if (G.gameOver.playAgain.includes(i.toString())) {
+      return getBottomRow("ready", <FontAwesomeIcon icon={faDoorOpen} />);
+    } else if (G.gameOver.left.includes(i.toString())) {
+      return getBottomRow("left", <FontAwesomeIcon icon={faDoorClosed} />);
+    } else if (player.isOut) {
+      return getBottomRow("exiled", <FontAwesomeIcon icon={faSkullCrossbones} />);
+    } else {
+      return getBottomRow("winner", <FontAwesomeIcon icon={faCrown} />);
+    }
+  };
+
   return (
     <div
       className={`player ${animate}`}
@@ -104,21 +129,7 @@ const Player = ({ G, ctx, playerID, moves, i }) => {
           {hand}
         </div>
         {player.isOut || gameOver ? (
-          <div className="exiled-text">
-            {player.isOut ? (
-              <>
-                <FontAwesomeIcon icon={faSkullCrossbones} />
-                &nbsp;(exiled)&nbsp;
-                <FontAwesomeIcon icon={faSkullCrossbones} />
-              </>
-            ) : (
-              <>
-                <FontAwesomeIcon icon={faCrown} />
-                &nbsp;winner&nbsp;
-                <FontAwesomeIcon icon={faCrown} />
-              </>
-            )}
-          </div>
+          <div className="exiled-text">{bottomRow()}</div>
         ) : (
           <div className="coin-row no-gutters">
             <div className="w-50 h-100 d-flex justify-content-end" style={{ paddingRight: "1%" }}>

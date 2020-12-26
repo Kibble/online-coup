@@ -1,4 +1,6 @@
-.choosing-panel {
+@import "../../../styles.scss";
+
+#choosing_panel {
   max-height: 100%;
   display: flex;
   flex: 1;
@@ -113,22 +115,19 @@
   }
 }
 
-.leave-btn-big {
-  width: 15vw;
-  margin-top: 2vh;
-  font-size: 2.75vw;
-  text-transform: uppercase;
-  border: 0.4vw solid #42526c;
-  height: 11vh;
-  border-radius: 0.175vw;
-  color: #42526c;
-  &:hover {
-    background: #b0c4de;
+.play-again-btn {
+  @extend .btn2;
+  margin: 0.75vh 0;
+  width: 24vw;
+  border-color: #666666;
+  color: #666666;
+  &:enabled {
+    &:hover {
+      background: #cccccc;
+    }
   }
-  &:focus,
-  &:active,
-  &:focus:active {
-    outline: none;
+  &:disabled {
+    opacity: 0.5;
   }
 }
 

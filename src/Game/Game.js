@@ -8,7 +8,7 @@ import {
   continueTurn,
 } from "./logic/actions/intermediary";
 import { income, coup, executeAction, allow, block, initiateChallenge } from "./logic/actions/main";
-import { message, changeNames, endTurn } from "./logic/actions/misc";
+import { message, changeNames, endTurn, leave, playAgain, setNewRoom } from "./logic/actions/misc";
 import { initializeGame, getPlayOrder } from "./logic/initializer";
 import { getTurnMsg } from "./logic/messageBuilder";
 import { GAME_NAME } from "../config";
@@ -22,6 +22,11 @@ const setup = ({ numPlayers }) => {
     deck: deck,
     players: players,
     winner: { name: "", id: "-1" },
+    gameOver: {
+      playAgain: [],
+      left: [],
+      newRoomID: "",
+    },
     turnLog: {
       action: "",
       player: {},
@@ -87,7 +92,10 @@ export const Coup = {
           continueTurn,
           endTurn,
           changeNames,
+          leave,
+          playAgain,
           message,
+          setNewRoom,
         },
       },
       block: {
@@ -109,7 +117,7 @@ export const Coup = {
         moves: { loseCardAndShuffle, message },
       },
       idle: {
-        moves: { changeNames, message },
+        moves: { changeNames, message, leave, playAgain, setNewRoom },
       },
     },
   },

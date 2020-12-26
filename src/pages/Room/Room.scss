@@ -1,3 +1,5 @@
+@import "../../styles.scss";
+
 .room-title {
   &::before,
   &::after {
@@ -14,7 +16,7 @@
   line-height: 1.2;
 }
 
-.room-info {
+.room-info-area {
   position: absolute;
   color: #555555;
   bottom: 10.5vh;
@@ -23,22 +25,19 @@
   line-height: 1.2;
 }
 
+.room-info {
+  margin-bottom: 2vh;
+}
+
 .leave-btn {
+  @extend .btn2;
   width: 12vw;
-  margin-top: 2vh;
-  font-size: 4.5vh;
-  text-transform: uppercase;
-  border: 0.6vh solid #42526c;
-  height: 8vh;
-  border-radius: 0.5vh;
+  border-color: #42526c;
   color: #42526c;
-  &:hover {
-    background: #b0c4de;
-  }
-  &:focus,
-  &:active,
-  &:focus:active {
-    outline: none;
+  &:enabled {
+    &:hover {
+      background: #b0c4de;
+    }
   }
 }
 

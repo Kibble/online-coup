@@ -17,4 +17,20 @@ const endTurn = (G, ctx) => {
   ctx.events.endTurn();
 };
 
-export { message, changeNames, endTurn };
+const playAgain = (G, ctx, id) => {
+  G.gameOver.playAgain.push(id);
+};
+
+const leave = (G, ctx, id) => {
+  const index = G.gameOver.playAgain.indexOf(id);
+  if (index > -1) {
+    G.gameOver.playAgain.splice(index, 1);
+  }
+  G.gameOver.left.push(id);
+};
+
+const setNewRoom = (G, ctx, roomID) => {
+  G.gameOver.newRoomID = roomID;
+};
+
+export { message, changeNames, endTurn, playAgain, leave, setNewRoom };

@@ -46,3 +46,17 @@
     background: #a2b5cd;
   }
 }
+
+// leave, play again btn style
+.btn2 {
+  font-size: 4.5vh;
+  text-transform: uppercase;
+  border: 0.6vh solid #42526c;
+  height: 8vh;
+  border-radius: 0.5vh;
+  &:focus,
+  &:active,
+  &:focus:active {
+    outline: none;
+  }
+}

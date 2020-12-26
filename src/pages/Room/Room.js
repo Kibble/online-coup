@@ -105,7 +105,7 @@ const Room = (props) => {
             }
           })}
         </div>
-        <div className="room-info">
+        <div className="room-info-area">
           <div className="roomID-area">
             room id:
             <textarea id="roomID" value={id} readOnly />
@@ -117,7 +117,7 @@ const Room = (props) => {
               {copied ? "copied" : "copy"}
             </button>
           </div>
-          <div>
+          <div className="room-info">
             Game will begin once all
             {players.length === 0 ? "" : ` ${players.length}`} players have joined.
           </div>
