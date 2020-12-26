@@ -80,11 +80,9 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       document.getElementById("choosing_panel").style.flexDirection = "column";
       document.getElementById("choosing_panel").style.alignItems = "center";
       document.getElementById("choosing_panel").style.justifyContent = "flex-start";
-      const playAgainCounter =
-        G.gameOver.left.length !== 0 ? "N/A" : `${G.gameOver.playAgain.length}/${ctx.numPlayers}`;
       temp.push(
         <button key={uniqid()} className="play-again-btn" onClick={playAgain} disabled={G.gameOver.left.length !== 0}>
-          play again [{playAgainCounter}]
+          play again [{G.gameOver.left.length !== 0 ? "N/A" : `${G.gameOver.playAgain.length}/${ctx.numPlayers}`}]
         </button>
       );
       temp.push(

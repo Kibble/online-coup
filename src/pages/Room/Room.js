@@ -18,7 +18,7 @@ const SERVER_URL = APP_PRODUCTION ? origin : `${protocol}//${hostname}:${DEFAULT
 const CoupClient = Client({
   game: Coup,
   board: Board,
-  debug: true,
+  debug: false,
   multiplayer: SocketIO({ server: SERVER_URL }),
 });
 
