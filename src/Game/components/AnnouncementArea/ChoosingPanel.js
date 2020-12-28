@@ -80,8 +80,19 @@ const ChoosingPanel = ({ G, ctx, playerID, moves, gameID }) => {
       document.getElementById("choosing_panel").style.flexDirection = "column";
       document.getElementById("choosing_panel").style.alignItems = "center";
       document.getElementById("choosing_panel").style.justifyContent = "flex-start";
+      let secondClassName = "";
+      if (G.gameOver.left.length !== 0) {
+        secondClassName = "play-again-disabled";
+      } else if (G.gameOver.playAgain.includes(playerID)) {
+        secondClassName = "play-again-selected";
+      }
       temp.push(
-        <button key={uniqid()} className="play-again-btn" onClick={playAgain} disabled={G.gameOver.left.length !== 0}>
+        <button
+          key={uniqid()}
+          className={`play-again-btn ${secondClassName}`}
+          onClick={playAgain}
+          disabled={G.gameOver.left.length !== 0 || G.gameOver.playAgain.includes(playerID)}
+        >
           play again [{G.gameOver.left.length !== 0 ? "N/A" : `${G.gameOver.playAgain.length}/${ctx.numPlayers}`}]
         </button>
       );

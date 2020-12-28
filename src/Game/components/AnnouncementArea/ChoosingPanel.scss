@@ -126,9 +126,14 @@
       background: #cccccc;
     }
   }
-  &:disabled {
-    opacity: 0.5;
-  }
+}
+
+.play-again-disabled {
+  opacity: 0.5;
+}
+
+.play-again-selected {
+  background: #c0c0c0;
 }
 
 // animations
